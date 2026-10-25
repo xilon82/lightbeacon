@@ -182,18 +182,22 @@ class _BeaconPageState extends ConsumerState<BeaconPage>
             if (session.error != null)
               _HudBanner(icon: Icons.error_outline, text: l10n.beaconTorchError),
             const Spacer(),
+            // Dark pill with a light border: the screen behind can be any
+            // color, including pure white, so the stop button must never rely
+            // on the background for contrast.
             FilledButton.icon(
               onPressed: _stop,
               icon: const Icon(Icons.stop_rounded),
               label: Text(l10n.beaconStop),
               style: FilledButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
+                backgroundColor: Colors.black.withValues(alpha: 0.72),
+                foregroundColor: Colors.white,
                 minimumSize: const Size.fromHeight(64),
                 textStyle: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                 ),
+                side: const BorderSide(color: Colors.white54, width: 1.5),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18),
                 ),
@@ -217,9 +221,9 @@ class _HudPill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.55),
+        color: Colors.black.withValues(alpha: 0.72),
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: Colors.white24),
+        border: Border.all(color: Colors.white38),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -252,9 +256,9 @@ class _HudBanner extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.7),
+        color: Colors.black.withValues(alpha: 0.82),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.accent.withValues(alpha: 0.6)),
+        border: Border.all(color: AppTheme.accent.withValues(alpha: 0.8)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

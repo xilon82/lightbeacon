@@ -7,6 +7,12 @@ flash regolabile, schermo colorato con effetti, torcia fissa per illuminare il
 cammino. Pensata per pedoni, ciclisti e automobilisti nei punti delicati della
 strada.
 
+<p align="center">
+  <img src="docs/screenshots/home.png" width="30%" alt="Home">
+  <img src="docs/screenshots/controls.png" width="30%" alt="Pannello controlli">
+  <img src="docs/screenshots/presets.png" width="30%" alt="Preset">
+</p>
+
 ---
 
 ## Funzionalità
