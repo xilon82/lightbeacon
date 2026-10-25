@@ -194,8 +194,15 @@ lib/
   l10n/          ARB italiano/inglese
 test/
   engine/  domain/  widget/
+android/app/src/main/res/
+  mipmap-anydpi-v26/  adaptive icon
+  values-v31/         splash Android 12+
+  drawable-*/         logo splash
 docs/
-  PLAN.md        piano tecnico e roadmap
+  PLAN.md             piano tecnico e roadmap
+  screenshots/        screenshot per il README
+tools/
+  generate_icons.py   rigenera icona e splash
 ```
 
 ---
@@ -212,6 +219,7 @@ Implementato:
 - [x] Internazionalizzazione IT/EN
 - [x] Onboarding di sicurezza
 - [x] Pannello controlli contestuale
+- [x] Icona adattiva e splash screen a tema scuro
 
 Da fare (vedi roadmap in [docs/PLAN.md](docs/PLAN.md)):
 

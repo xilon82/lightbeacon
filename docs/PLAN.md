@@ -340,6 +340,8 @@ Piano B: funzionamento solo a schermo acceso con `FLAG_KEEP_SCREEN_ON`.
   e spiega perché
 - Preset predefiniti + salvataggio preset personalizzati dal pannello
 - i18n IT/EN completa, onboarding di sicurezza
+- Icona adattiva (con layer monocromatico per Android 13+) e splash screen a
+  tema scuro, generati da `tools/generate_icons.py`
 - 76 test (engine, modelli, widget)
 
 **Da fare:**
