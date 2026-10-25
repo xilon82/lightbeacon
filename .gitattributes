@@ -1,0 +1,21 @@
+# Normalize line endings so the repo stays consistent across Windows/macOS/Linux.
+* text=auto eol=lf
+
+# Windows-only scripts keep CRLF.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary assets.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.ttf binary
+*.otf binary
+*.jar binary
+*.keystore binary
+*.jks binary
+
+# Generated localization files are committed but not diffed in reviews.
+lib/l10n/app_localizations*.dart linguist-generated=true

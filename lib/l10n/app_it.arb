@@ -1,0 +1,189 @@
+{
+  "@@locale": "it",
+
+  "appTitle": "LightBeacon",
+  "appTagline": "Fatti vedere. Anche al buio.",
+
+  "homeSubtitle": "Scegli come farti vedere",
+  "homeTip": "Tieni il telefono all'altezza del petto, con lo schermo verso il traffico.",
+
+  "modeTorchTitle": "Torcia fissa",
+  "modeTorchSubtitle": "Illumina il cammino",
+  "modeStrobeTitle": "Strobo",
+  "modeStrobeSubtitle": "Flash e schermo lampeggianti",
+  "modeScreenTitle": "Solo schermo",
+  "modeScreenSubtitle": "Colore ed effetti, senza flash",
+  "modeSosTitle": "SOS",
+  "modeSosSubtitle": "Segnale di emergenza",
+  "modeComboTitle": "Strada",
+  "modeComboSubtitle": "Flash e schermo insieme",
+
+  "navPresets": "Preset",
+  "navSettings": "Impostazioni",
+
+  "beaconStop": "Ferma",
+  "beaconControls": "Controlli",
+  "beaconTapHint": "Tocca per mostrare i controlli",
+  "beaconTorchUnavailable": "Flash non disponibile su questo dispositivo",
+  "beaconTorchError": "Impossibile controllare il flash",
+  "beaconJitterWarning": "Lampeggio instabile: frequenza ridotta",
+  "beaconTimeoutReached": "Spegnimento automatico",
+
+  "controlFrequency": "Frequenza",
+  "controlFrequencyValue": "{value} Hz",
+  "@controlFrequencyValue": {
+    "placeholders": {
+      "value": { "type": "String" }
+    }
+  },
+  "controlDuty": "Durata impulso",
+  "controlDutyValue": "{value}%",
+  "@controlDutyValue": {
+    "placeholders": {
+      "value": { "type": "String" }
+    }
+  },
+  "controlPattern": "Pattern",
+  "controlEffect": "Effetto schermo",
+  "controlPrimaryColor": "Colore",
+  "controlSecondaryColor": "Secondo colore",
+  "controlBrightness": "Luminosità schermo",
+  "controlBrightnessValue": "{value}%",
+  "@controlBrightnessValue": {
+    "placeholders": {
+      "value": { "type": "String" }
+    }
+  },
+  "controlSync": "Sincronia",
+  "controlTimeout": "Spegnimento automatico",
+  "controlSectionFlash": "Lampeggio",
+  "controlSectionScreen": "Schermo",
+  "controlSectionTiming": "Tempi",
+
+  "controlFrequencyDesc": "Quanti lampeggi al secondo",
+  "controlDutyDesc": "Quanto resta acceso in ogni lampeggio",
+  "controlPatternDesc": "Forma del lampeggio",
+  "controlEffectDesc": "Come si muove il colore sullo schermo",
+  "controlBrightnessDesc": "Luminosità del display durante l'uso",
+  "controlSyncDesc": "Come schermo e flash si alternano",
+  "controlTimeoutDesc": "Spegnimento automatico dopo",
+  "controlTorchToggle": "Flash",
+  "controlScreenToggle": "Schermo",
+  "controlTorchToggleDesc": "Usa il LED posteriore",
+  "controlScreenToggleDesc": "Usa il display come luce colorata",
+
+  "hintSteadyTorch": "Il flash resta acceso fisso: frequenza e durata non si applicano.",
+  "hintSteadyScreen": "Lo schermo resta di un colore pieno.",
+  "hintTorchOff": "Flash disattivato in questa modalità.",
+  "hintScreenOff": "Schermo disattivato in questa modalità.",
+  "hintSyncNeedsBoth": "Si applica solo con flash e schermo entrambi attivi e animati.",
+
+  "savePresetTitle": "Salva configurazione",
+  "savePresetAction": "Salva come preset",
+  "savePresetNameLabel": "Nome",
+  "savePresetNameHint": "Es. Strada di notte",
+  "savePresetDefaultName": "Configurazione {date}",
+  "@savePresetDefaultName": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "savePresetSaved": "Preset salvato",
+  "savePresetEmptyName": "Inserisci un nome",
+  "savePresetSave": "Salva",
+
+  "patternSingle": "Singolo",
+  "patternDouble": "Doppio",
+  "patternTriple": "Triplo",
+  "patternSos": "SOS",
+  "patternSteady": "Fisso",
+
+  "effectSolid": "Pieno",
+  "effectPulse": "Pulsazione",
+  "effectStrobe": "Strobo",
+  "effectAlternate": "Alternato",
+  "effectSweep": "Scansione",
+  "effectRainbow": "Arcobaleno",
+
+  "syncInPhase": "In fase",
+  "syncCounterPhase": "Controfase",
+  "syncIndependent": "Indipendente",
+
+  "colorWhite": "Bianco",
+  "colorAmber": "Ambra",
+  "colorRed": "Rosso",
+  "colorGreen": "Verde",
+  "colorCyan": "Ciano",
+  "colorMagenta": "Magenta",
+
+  "timeoutNone": "Mai",
+  "timeoutMinutes": "{count} min",
+  "@timeoutMinutes": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "presetsTitle": "Preset",
+  "presetsBuiltIn": "Predefiniti",
+  "presetsCustom": "Personalizzati",
+  "presetPedestrian": "Pedone",
+  "presetPedestrianDesc": "Bianco 2 Hz, flash in fase",
+  "presetBike": "Bici / monopattino",
+  "presetBikeDesc": "Ambra pulsante, torcia fissa",
+  "presetBreakdown": "Auto in panne",
+  "presetBreakdownDesc": "Rosso e ambra alternati",
+  "presetEmergency": "Emergenza",
+  "presetEmergencyDesc": "SOS su flash e schermo",
+  "presetIlluminate": "Illuminazione",
+  "presetIlluminateDesc": "Solo torcia fissa",
+  "presetWorksite": "Cantiere",
+  "presetWorksiteDesc": "Ambra strobo, impulso corto",
+  "presetCustom": "Personalizzato",
+  "presetApply": "Applica",
+
+  "settingsTitle": "Impostazioni",
+  "settingsLanguage": "Lingua",
+  "settingsLanguageSystem": "Sistema",
+  "settingsLanguageItalian": "Italiano",
+  "settingsLanguageEnglish": "Inglese",
+  "settingsBrightnessCap": "Limite luminosità",
+  "settingsBrightnessCapDesc": "Massimo consentito per lo schermo",
+  "settingsKeepAwake": "Mantieni schermo acceso",
+  "settingsKeepAwakeDesc": "Evita che il display si spenga durante l'uso",
+  "settingsSafety": "Avvisi di sicurezza",
+  "settingsSafetyDesc": "Rivedi fotosensibilità e uso stradale",
+  "settingsAbout": "Informazioni",
+  "settingsVersion": "Versione {version}",
+  "@settingsVersion": {
+    "placeholders": {
+      "version": { "type": "String" }
+    }
+  },
+  "settingsReset": "Ripristina impostazioni",
+  "settingsResetConfirm": "Ripristinare tutte le impostazioni ai valori predefiniti?",
+
+  "safetyTitle": "Prima di iniziare",
+  "safetyPhotosensitivityTitle": "Fotosensibilità",
+  "safetyPhotosensitivityBody": "Il lampeggio rapido può causare crisi epilettiche in persone fotosensibili. Non puntare il flash o lo schermo verso gli occhi di qualcuno.",
+  "safetyRoadTitle": "Uso sulla strada",
+  "safetyRoadBody": "LightBeacon non è un dispositivo di segnalazione omologato. Non sostituisce giubbotto riflettente, luci di posizione o segnaletica. Usalo come supporto, non come unica misura di sicurezza.",
+  "safetyLawTitle": "Colori consentiti",
+  "safetyLawBody": "Il lampeggio blu è riservato ai veicoli di emergenza. LightBeacon non include il blu tra i colori disponibili.",
+  "safetyBatteryTitle": "Batteria e calore",
+  "safetyBatteryBody": "Flash e schermo al massimo consumano molta batteria e scaldano il dispositivo. L'app riduce automaticamente la luminosità se necessario.",
+  "safetyAccept": "Ho capito",
+
+  "warningHighFrequencyTitle": "Frequenza elevata",
+  "warningHighFrequencyBody": "Oltre 3 lampeggi al secondo il rischio per le persone fotosensibili aumenta. Continuare?",
+  "warningContinue": "Continua",
+
+  "commonCancel": "Annulla",
+  "commonOk": "OK",
+  "commonClose": "Chiudi",
+  "commonReset": "Ripristina",
+
+  "errorTorchUnavailable": "Questo dispositivo non ha un flash utilizzabile.",
+  "errorTorchBusy": "Il flash è in uso da un'altra app.",
+  "errorGeneric": "Si è verificato un errore."
+}

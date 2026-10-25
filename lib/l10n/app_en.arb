@@ -1,0 +1,189 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "LightBeacon",
+  "appTagline": "Be seen. Even in the dark.",
+
+  "homeSubtitle": "Choose how to be seen",
+  "homeTip": "Hold the phone at chest height with the screen facing traffic.",
+
+  "modeTorchTitle": "Steady torch",
+  "modeTorchSubtitle": "Light up the path",
+  "modeStrobeTitle": "Strobe",
+  "modeStrobeSubtitle": "Flashing torch and screen",
+  "modeScreenTitle": "Screen only",
+  "modeScreenSubtitle": "Color and effects, no flash",
+  "modeSosTitle": "SOS",
+  "modeSosSubtitle": "Emergency signal",
+  "modeComboTitle": "Road",
+  "modeComboSubtitle": "Flash and screen together",
+
+  "navPresets": "Presets",
+  "navSettings": "Settings",
+
+  "beaconStop": "Stop",
+  "beaconControls": "Controls",
+  "beaconTapHint": "Tap to show controls",
+  "beaconTorchUnavailable": "Flash is not available on this device",
+  "beaconTorchError": "Unable to control the flash",
+  "beaconJitterWarning": "Unstable flashing: frequency reduced",
+  "beaconTimeoutReached": "Turned off automatically",
+
+  "controlFrequency": "Frequency",
+  "controlFrequencyValue": "{value} Hz",
+  "@controlFrequencyValue": {
+    "placeholders": {
+      "value": { "type": "String" }
+    }
+  },
+  "controlDuty": "Pulse length",
+  "controlDutyValue": "{value}%",
+  "@controlDutyValue": {
+    "placeholders": {
+      "value": { "type": "String" }
+    }
+  },
+  "controlPattern": "Pattern",
+  "controlEffect": "Screen effect",
+  "controlPrimaryColor": "Color",
+  "controlSecondaryColor": "Second color",
+  "controlBrightness": "Screen brightness",
+  "controlBrightnessValue": "{value}%",
+  "@controlBrightnessValue": {
+    "placeholders": {
+      "value": { "type": "String" }
+    }
+  },
+  "controlSync": "Sync",
+  "controlTimeout": "Auto turn-off",
+  "controlSectionFlash": "Flashing",
+  "controlSectionScreen": "Screen",
+  "controlSectionTiming": "Timing",
+
+  "controlFrequencyDesc": "How many flashes per second",
+  "controlDutyDesc": "How long it stays on in each flash",
+  "controlPatternDesc": "Shape of the flash",
+  "controlEffectDesc": "How the color moves on screen",
+  "controlBrightnessDesc": "Display brightness while in use",
+  "controlSyncDesc": "How screen and flash alternate",
+  "controlTimeoutDesc": "Turn off automatically after",
+  "controlTorchToggle": "Flash",
+  "controlScreenToggle": "Screen",
+  "controlTorchToggleDesc": "Use the rear LED",
+  "controlScreenToggleDesc": "Use the display as a colored light",
+
+  "hintSteadyTorch": "The flash stays on steadily: frequency and pulse length do not apply.",
+  "hintSteadyScreen": "The screen stays a solid color.",
+  "hintTorchOff": "Flash is off in this mode.",
+  "hintScreenOff": "Screen is off in this mode.",
+  "hintSyncNeedsBoth": "Only applies when both flash and screen are on and animated.",
+
+  "savePresetTitle": "Save configuration",
+  "savePresetAction": "Save as preset",
+  "savePresetNameLabel": "Name",
+  "savePresetNameHint": "e.g. Night road",
+  "savePresetDefaultName": "Configuration {date}",
+  "@savePresetDefaultName": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "savePresetSaved": "Preset saved",
+  "savePresetEmptyName": "Enter a name",
+  "savePresetSave": "Save",
+
+  "patternSingle": "Single",
+  "patternDouble": "Double",
+  "patternTriple": "Triple",
+  "patternSos": "SOS",
+  "patternSteady": "Steady",
+
+  "effectSolid": "Solid",
+  "effectPulse": "Pulse",
+  "effectStrobe": "Strobe",
+  "effectAlternate": "Alternate",
+  "effectSweep": "Sweep",
+  "effectRainbow": "Rainbow",
+
+  "syncInPhase": "In phase",
+  "syncCounterPhase": "Counter-phase",
+  "syncIndependent": "Independent",
+
+  "colorWhite": "White",
+  "colorAmber": "Amber",
+  "colorRed": "Red",
+  "colorGreen": "Green",
+  "colorCyan": "Cyan",
+  "colorMagenta": "Magenta",
+
+  "timeoutNone": "Never",
+  "timeoutMinutes": "{count} min",
+  "@timeoutMinutes": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "presetsTitle": "Presets",
+  "presetsBuiltIn": "Built-in",
+  "presetsCustom": "Custom",
+  "presetPedestrian": "Pedestrian",
+  "presetPedestrianDesc": "White 2 Hz, flash in phase",
+  "presetBike": "Bike / scooter",
+  "presetBikeDesc": "Pulsing amber, steady torch",
+  "presetBreakdown": "Breakdown",
+  "presetBreakdownDesc": "Alternating red and amber",
+  "presetEmergency": "Emergency",
+  "presetEmergencyDesc": "SOS on flash and screen",
+  "presetIlluminate": "Illuminate",
+  "presetIlluminateDesc": "Steady torch only",
+  "presetWorksite": "Worksite",
+  "presetWorksiteDesc": "Amber strobe, short pulse",
+  "presetCustom": "Custom",
+  "presetApply": "Apply",
+
+  "settingsTitle": "Settings",
+  "settingsLanguage": "Language",
+  "settingsLanguageSystem": "System",
+  "settingsLanguageItalian": "Italian",
+  "settingsLanguageEnglish": "English",
+  "settingsBrightnessCap": "Brightness limit",
+  "settingsBrightnessCapDesc": "Maximum allowed for the screen",
+  "settingsKeepAwake": "Keep screen on",
+  "settingsKeepAwakeDesc": "Prevent the display from sleeping while in use",
+  "settingsSafety": "Safety notices",
+  "settingsSafetyDesc": "Review photosensitivity and road use",
+  "settingsAbout": "About",
+  "settingsVersion": "Version {version}",
+  "@settingsVersion": {
+    "placeholders": {
+      "version": { "type": "String" }
+    }
+  },
+  "settingsReset": "Reset settings",
+  "settingsResetConfirm": "Reset all settings to their defaults?",
+
+  "safetyTitle": "Before you start",
+  "safetyPhotosensitivityTitle": "Photosensitivity",
+  "safetyPhotosensitivityBody": "Rapid flashing can trigger seizures in people with photosensitive epilepsy. Never point the flash or the screen at anyone's eyes.",
+  "safetyRoadTitle": "Road use",
+  "safetyRoadBody": "LightBeacon is not a certified signalling device. It does not replace a reflective vest, position lights or road signs. Use it as a support, not as your only safety measure.",
+  "safetyLawTitle": "Allowed colors",
+  "safetyLawBody": "Flashing blue is reserved for emergency vehicles. LightBeacon does not offer blue among its colors.",
+  "safetyBatteryTitle": "Battery and heat",
+  "safetyBatteryBody": "Flash and screen at full power drain the battery and heat up the device. The app automatically lowers brightness when needed.",
+  "safetyAccept": "I understand",
+
+  "warningHighFrequencyTitle": "High frequency",
+  "warningHighFrequencyBody": "Above 3 flashes per second the risk for photosensitive people increases. Continue?",
+  "warningContinue": "Continue",
+
+  "commonCancel": "Cancel",
+  "commonOk": "OK",
+  "commonClose": "Close",
+  "commonReset": "Reset",
+
+  "errorTorchUnavailable": "This device has no usable flash.",
+  "errorTorchBusy": "The flash is in use by another app.",
+  "errorGeneric": "Something went wrong."
+}
