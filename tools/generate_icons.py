@@ -42,11 +42,6 @@ CORE_RADIUS = 0.20
 RING_RADII = (0.40, 0.60, 0.80)
 RING_WIDTH = 0.08
 
-# The art is flat, so a 16-colour palette is visually lossless and shrinks the
-# assets by ~5x compared to truecolour PNG (which keeps the antialiasing halo
-# as thousands of distinct pixels).
-PALETTE_COLORS = 16
-
 
 def _canvas(size: int, bg=BG) -> Image.Image:
     return Image.new("RGBA", (size * SS, size * SS), bg)
@@ -57,25 +52,12 @@ def _finish(img: Image.Image, size: int) -> Image.Image:
 
 
 def save_optimized(img: Image.Image, path: str) -> None:
-    """Writes a PNG with a small palette.
+    """Writes a full-quality PNG.
 
-    The artwork is flat with antialiased edges, so quantizing keeps the look
-    while cutting the file size by roughly 5x compared to truecolour PNG, which
-    stores the antialiasing halo as thousands of distinct pixels.
+    No palette quantization: the antialiased ring edges need the full colour
+    depth, otherwise the icon looks grainy on the launcher.
     """
-    has_alpha = img.getchannel("A").getextrema()[0] < 255
-    if has_alpha:
-        # Fast Octree is the only method that handles alpha.
-        quantized = img.quantize(colors=PALETTE_COLORS, method=Image.FASTOCTREE)
-        quantized.save(path, transparency=0, optimize=True)
-    else:
-        # Drop the unused alpha channel first: ADAPTIVE gives better palettes
-        # than Fast Octree and is only valid on RGB images.
-        quantized = img.convert("RGB").quantize(
-            colors=PALETTE_COLORS,
-            method=Image.ADAPTIVE,
-        )
-        quantized.save(path, optimize=True)
+    img.save(path, optimize=True)
 
 
 def beacon_mark(
@@ -174,8 +156,6 @@ DENSITIES = [
 ]
 
 LEGACY_ICON_DP = 48
-ADAPTIVE_ICON_DP = 108
-SPLASH_LOGO_DP = 160
 
 
 def _write_densities(filename: str, folder_template: str, dp: int) -> None:
@@ -195,39 +175,11 @@ def main() -> None:
         fn(512).save(os.path.join(CONCEPTS, f"{name}.png"))
         print(f"  docs/icon-concepts/{name}.png")
 
-    print("legacy launcher icon:")
+    # Only the legacy icon is raster. The adaptive icon and the splash logo are
+    # vector drawables (ic_beacon_mark.xml, splash_logo.xml), which stay sharp
+    # at every density and on every launcher mask.
+    print("legacy launcher icon (API < 26):")
     _write_densities("ic_launcher.png", "mipmap-{}", LEGACY_ICON_DP)
-
-    print("adaptive icon foreground (scaled into the safe zone):")
-    for suffix, multiplier in DENSITIES:
-        folder = os.path.join(RES, f"mipmap-{suffix}")
-        px = int(round(ADAPTIVE_ICON_DP * multiplier))
-        save_optimized(
-            beacon_mark(px, scale=0.70, bg=(0, 0, 0, 0)),
-            os.path.join(folder, "ic_launcher_foreground.png"),
-        )
-        print(f"  mipmap-{suffix}/ic_launcher_foreground.png  {px}x{px}")
-
-    print("splash logo:")
-    for suffix, multiplier in DENSITIES:
-        folder = os.path.join(RES, f"drawable-{suffix}")
-        os.makedirs(folder, exist_ok=True)
-        px = int(round(SPLASH_LOGO_DP * multiplier))
-        save_optimized(
-            beacon_mark(px, bg=(0, 0, 0, 0)),
-            os.path.join(folder, "splash_logo.png"),
-        )
-        print(f"  drawable-{suffix}/splash_logo.png  {px}x{px}")
-
-    print("splash icon for Android 12+ (108 dp canvas, safe zone):")
-    for suffix, multiplier in DENSITIES:
-        folder = os.path.join(RES, f"drawable-{suffix}")
-        px = int(round(ADAPTIVE_ICON_DP * multiplier))
-        save_optimized(
-            beacon_mark(px, scale=0.70, bg=(0, 0, 0, 0)),
-            os.path.join(folder, "splash_icon.png"),
-        )
-        print(f"  drawable-{suffix}/splash_icon.png  {px}x{px}")
 
 
 if __name__ == "__main__":

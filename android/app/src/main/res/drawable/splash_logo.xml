@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Splash logo for Android 11 and below, where the system centres a plain
+  drawable instead of using the Android 12 splash API.
+
+  Same mark as ic_beacon_mark.xml but at full size (no adaptive safe zone),
+  because here nothing masks it.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="160dp"
+    android:height="160dp"
+    android:viewportWidth="160"
+    android:viewportHeight="160">
+
+    <path
+        android:pathData="M80,80 m-32,0 a32,32 0 1,0 64,0 a32,32 0 1,0 -64,0"
+        android:strokeColor="#FFB020"
+        android:strokeWidth="6.4"
+        android:fillColor="@android:color/transparent" />
+
+    <path
+        android:pathData="M80,80 m-48,0 a48,48 0 1,0 96,0 a48,48 0 1,0 -96,0"
+        android:strokeColor="#FFB020"
+        android:strokeWidth="6.4"
+        android:fillColor="@android:color/transparent" />
+
+    <path
+        android:pathData="M80,80 m-64,0 a64,64 0 1,0 128,0 a64,64 0 1,0 -128,0"
+        android:strokeColor="#FFB020"
+        android:strokeWidth="6.4"
+        android:fillColor="@android:color/transparent" />
+
+    <path
+        android:pathData="M80,80 m-16,0 a16,16 0 1,0 32,0 a16,16 0 1,0 -32,0"
+        android:fillColor="#FFB020" />
+</vector>

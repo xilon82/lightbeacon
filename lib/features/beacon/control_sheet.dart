@@ -18,11 +18,10 @@ class ControlSheet extends ConsumerStatefulWidget {
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppTheme.surface,
+      // Transparent so the sheet's own rounded corners are visible; the
+      // surface colour is painted by the DraggableScrollableSheet below.
+      backgroundColor: Colors.transparent,
       barrierColor: Colors.black54,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
       builder: (_) => const ControlSheet(),
     );
   }
@@ -107,27 +106,42 @@ class _ControlSheetState extends ConsumerState<ControlSheet> {
     final settings = ref.watch(settingsProvider);
     final l10n = context.l10n;
 
-    return SafeArea(
-      top: false,
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.sizeOf(context).height * 0.85,
-        ),
-        child: ListView(
-          shrinkWrap: true,
-          padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
-          children: [
-            Center(
-              child: Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.only(bottom: 16),
-                decoration: BoxDecoration(
-                  color: AppTheme.outline,
-                  borderRadius: BorderRadius.circular(2),
+    // DraggableScrollableSheet coordinates the two vertical gestures that
+    // would otherwise fight each other: dragging the list scrolls it, and
+    // dragging down while already at the top shrinks the sheet. Once it
+    // reaches minChildSize, shouldCloseOnMinExtent pops the route.
+    //
+    // snap is deliberately off: with snapping enabled the sheet springs back
+    // to a snap size instead of continuing down to the dismiss threshold.
+    return DraggableScrollableSheet(
+      initialChildSize: 0.85,
+      minChildSize: 0.15,
+      maxChildSize: 0.95,
+      expand: false,
+      shouldCloseOnMinExtent: true,
+      builder: (context, scrollController) {
+        return DecoratedBox(
+          decoration: const BoxDecoration(
+            color: AppTheme.surface,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          child: SafeArea(
+            top: false,
+            child: ListView(
+              controller: scrollController,
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    margin: const EdgeInsets.only(bottom: 16),
+                    decoration: BoxDecoration(
+                      color: AppTheme.outline,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
                 ),
-              ),
-            ),
             // --- Flash -------------------------------------------------
             _SectionTitle(l10n.controlSectionFlash),
             _ToggleRow(
@@ -271,9 +285,11 @@ class _ControlSheetState extends ConsumerState<ControlSheet> {
                 ),
               ),
             ),
-          ],
-        ),
-      ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

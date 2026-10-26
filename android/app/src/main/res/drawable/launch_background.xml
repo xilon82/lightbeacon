@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Splash screen shown while the Android process starts, before Flutter
      draws its first frame. The background matches AppTheme.background so the
-     transition into the app is seamless. -->
+     transition into the app is seamless.
+
+     The logo is a vector, so it is placed with a plain <item> (a <bitmap>
+     element only accepts raster drawables) and sized explicitly. -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/splash_background" />
-    <item>
-        <bitmap
-            android:gravity="center"
-            android:src="@drawable/splash_logo" />
-    </item>
+    <item
+        android:drawable="@drawable/splash_logo"
+        android:gravity="center"
+        android:width="160dp"
+        android:height="160dp" />
 </layer-list>

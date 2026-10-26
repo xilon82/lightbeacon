@@ -182,6 +182,23 @@ void main() {
     expect(container.read(presetsProvider), isEmpty);
   });
 
+  testWidgets('swiping down dismisses the control sheet', (tester) async {
+    await _pumpBeacon(tester);
+
+    await tester.tap(find.byIcon(Icons.tune));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(find.byType(ControlSheet), findsOneWidget);
+
+    // Regression: the inner ListView used to swallow the vertical drag, so the
+    // sheet could only be dismissed by tapping the barrier.
+    await tester.drag(find.byType(ControlSheet), const Offset(0, 1800));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
+
+    expect(find.byType(ControlSheet), findsNothing);
+  });
+
   testWidgets('screen-only mode hides the flash controls', (tester) async {
     await _pumpBeacon(
       tester,
