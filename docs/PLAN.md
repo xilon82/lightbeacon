@@ -9,7 +9,7 @@
 - **Piattaforma**: Android (Flutter 3.41.2 / Dart 3.11.0)
 - **Orientamento**: solo portrait (il telefono sta dritto anche su bici/monopattino)
 - **Lingue**: Italiano + Inglese
-- **Test**: 76 verdi, `flutter analyze` pulito
+- **Test**: 88 verdi, `flutter analyze` pulito
 
 ---
 
@@ -169,6 +169,8 @@ on/off richiesto.
 - **Pattern**: single / double / triple / sos / breathe / steady
 - **Colore schermo**: bianco, ambra, rosso, verde, ciano, magenta + tinta libera
 - **Effetto schermo**: solid, pulse, strobe, alternate, sweep, rainbow
+  (strobe e alternate richiedono un pattern lampeggiante: con `steady` non
+  hanno un ciclo da seguire e non vengono offerti)
 - **Luminosità schermo**: 10 – 100% (con cap di sicurezza)
 - **Sincronia**: in fase / controfase / indipendente
 - **Timeout**: nessuno / 5 / 15 / 30 / 60 min
@@ -342,7 +344,7 @@ Piano B: funzionamento solo a schermo acceso con `FLAG_KEEP_SCREEN_ON`.
 - i18n IT/EN completa, onboarding di sicurezza
 - Icona adattiva (con layer monocromatico per Android 13+) e splash screen a
   tema scuro, generati da `tools/generate_icons.py`
-- 76 test (engine, modelli, widget)
+- 88 test (engine, modelli, widget, painter)
 
 **Da fare:**
 
@@ -384,6 +386,7 @@ Registrati perché sono lezioni utili per le fasi successive.
 | `WakelockPlus` atteso in `stop()` | Test appeso: il canale di piattaforma non risponde nei test | Chiamata fire-and-forget con `catchError` |
 | `_pulseSegments` con 1 impulso ignorava il duty | Test unitario: somma dei segmenti = 0.685 invece di 1.0 | Ramo dedicato per `pulses == 1` |
 | `TextEditingController` distrutto durante la chiusura del dialog | Test widget: crash `used after being disposed` | Controller spostato in un `StatefulWidget` dedicato |
+| Strobo/Alternato congelati su un colore con pattern fisso | Segnalato in uso: in modalità Strada lo schermo restava fermo | `BeaconConfig.effectSupported`/`normalized`: gli effetti guidati dal pattern non sono offerti con `steady` e degradano a `solid` |
 
 **Lezione**: i test unitari non bastano per il timing. La verifica sui log del
 driver LED (`adb logcat | grep setTorchModeStrength`) è l'unico modo per sapere

@@ -80,11 +80,44 @@ class BeaconConfig {
       torchEnabled && pattern != FlashPattern.steady;
 
   /// True when the screen effect changes over time, so sync applies.
+  ///
+  /// [patternDrivenEffects] read their on/off state from the pattern, so with
+  /// a steady pattern they are frozen on the primary colour.
   bool get screenAnimated =>
-      screenEnabled && effect != ScreenEffect.solid;
+      screenEnabled && effect != ScreenEffect.solid && effectSupported;
 
   /// True when the screen/torch relationship is meaningful at all.
   bool get syncRelevant => torchFlashing && screenAnimated;
+
+  /// Effects that take their on/off state from the flash pattern.
+  ///
+  /// They need a blinking pattern: [FlashPattern.steady] is always on, so the
+  /// screen would freeze on a single colour instead of animating.
+  static const patternDrivenEffects = <ScreenEffect>{
+    ScreenEffect.strobe,
+    ScreenEffect.alternate,
+  };
+
+  /// True when the current pattern can drive the current effect.
+  bool get effectSupported =>
+      !(pattern == FlashPattern.steady &&
+          patternDrivenEffects.contains(effect));
+
+  /// Effects the current pattern can actually drive.
+  List<ScreenEffect> get availableEffects => pattern == FlashPattern.steady
+      ? ScreenEffect.values
+            .where((e) => !patternDrivenEffects.contains(e))
+            .toList(growable: false)
+      : ScreenEffect.values;
+
+  /// This configuration with an effect the current pattern can drive.
+  ///
+  /// A steady pattern has no cycle to follow, so [ScreenEffect.strobe] and
+  /// [ScreenEffect.alternate] would leave the screen stuck on the primary
+  /// colour. They fall back to [ScreenEffect.solid], which is exactly what
+  /// they look like in that state.
+  BeaconConfig get normalized =>
+      effectSupported ? this : copyWith(effect: ScreenEffect.solid);
 
   BeaconConfig copyWith({
     FlashPattern? pattern,
@@ -218,7 +251,7 @@ class BeaconConfig {
       timeoutMinutes: _asInt(json['timeoutMinutes'], 0),
       torchEnabled: json['torchEnabled'] as bool? ?? true,
       screenEnabled: json['screenEnabled'] as bool? ?? true,
-    );
+    ).normalized;
   }
 
   @override

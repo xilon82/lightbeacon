@@ -73,7 +73,7 @@
   "controlScreenToggleDesc": "Usa il display come luce colorata",
 
   "hintSteadyTorch": "Il flash resta acceso fisso: frequenza e durata non si applicano.",
-  "hintSteadyScreen": "Lo schermo resta di un colore pieno.",
+  "hintSteadyScreen": "Con il flash fisso Strobo e Alternato non hanno un ciclo da seguire: lo schermo resta di un colore pieno.",
   "hintTorchOff": "Flash disattivato in questa modalità.",
   "hintScreenOff": "Schermo disattivato in questa modalità.",
   "hintSyncNeedsBoth": "Si applica solo con flash e schermo entrambi attivi e animati.",

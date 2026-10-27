@@ -115,14 +115,15 @@ flutter build apk --release --split-per-abi
 ## Test
 
 ```bash
-flutter test              # 76 test: engine, modelli, widget
+flutter test              # 88 test: engine, modelli, widget, painter
 flutter analyze           # deve essere pulito
 ```
 
 | Area | Cosa viene verificato |
 |---|---|
 | `test/engine/` | Matematica dei pattern, fase, compensazione del drift, jitter monitor |
-| `test/domain/` | Serializzazione config, migrazioni, preset predefiniti |
+| `test/domain/` | Serializzazione config, migrazioni, preset predefiniti, effetti disponibili |
+| `test/features/` | Rendering degli effetti a fasi note (colore effettivamente dipinto) |
 | `test/widget/` | Onboarding, home, schermata beacon, pannello controlli, salvataggio preset |
 
 ---
@@ -220,6 +221,7 @@ Implementato:
 - [x] Onboarding di sicurezza
 - [x] Pannello controlli contestuale
 - [x] Icona adattiva e splash screen a tema scuro
+- [x] Effetti guidati dal pattern coerenti con il flash fisso (v1.0.1)
 
 Da fare (vedi roadmap in [docs/PLAN.md](docs/PLAN.md)):
 

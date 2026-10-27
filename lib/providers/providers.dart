@@ -84,8 +84,9 @@ class BeaconConfigNotifier extends Notifier<BeaconConfig> {
   }
 
   void apply(BeaconConfig config) {
-    state = config;
-    unawaited(ref.read(settingsRepositoryProvider).saveLastConfig(config));
+    final normalized = config.normalized;
+    state = normalized;
+    unawaited(ref.read(settingsRepositoryProvider).saveLastConfig(normalized));
   }
 
   void update(BeaconConfig Function(BeaconConfig current) transform) =>

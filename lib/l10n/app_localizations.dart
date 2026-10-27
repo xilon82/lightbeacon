@@ -401,7 +401,7 @@ abstract class AppLocalizations {
   /// No description provided for @hintSteadyScreen.
   ///
   /// In it, this message translates to:
-  /// **'Lo schermo resta di un colore pieno.'**
+  /// **'Con il flash fisso Strobo e Alternato non hanno un ciclo da seguire: lo schermo resta di un colore pieno.'**
   String get hintSteadyScreen;
 
   /// No description provided for @hintTorchOff.

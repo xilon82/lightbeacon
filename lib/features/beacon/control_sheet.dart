@@ -35,7 +35,7 @@ class _ControlSheetState extends ConsumerState<ControlSheet> {
 
   void _update(BeaconConfig Function(BeaconConfig) transform) {
     final notifier = ref.read(beaconConfigProvider.notifier);
-    final next = transform(ref.read(beaconConfigProvider));
+    final next = transform(ref.read(beaconConfigProvider)).normalized;
     notifier.apply(next);
     ref.read(beaconSessionProvider.notifier).updateConfig(next);
   }
@@ -210,11 +210,13 @@ class _ControlSheetState extends ConsumerState<ControlSheet> {
               _ChipRow<ScreenEffect>(
                 label: l10n.controlEffect,
                 description: l10n.controlEffectDesc,
-                values: ScreenEffect.values,
+                values: config.availableEffects,
                 selected: config.effect,
                 labelOf: (e) => BeaconLabels.effect(context, e),
                 onSelected: (e) => _update((c) => c.copyWith(effect: e)),
               ),
+              if (config.pattern == FlashPattern.steady)
+                _Hint(l10n.hintSteadyScreen),
               const SizedBox(height: 16),
               _ColorRow(
                 label: l10n.controlPrimaryColor,

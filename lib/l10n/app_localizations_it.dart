@@ -168,7 +168,8 @@ class AppLocalizationsIt extends AppLocalizations {
       'Il flash resta acceso fisso: frequenza e durata non si applicano.';
 
   @override
-  String get hintSteadyScreen => 'Lo schermo resta di un colore pieno.';
+  String get hintSteadyScreen =>
+      'Con il flash fisso Strobo e Alternato non hanno un ciclo da seguire: lo schermo resta di un colore pieno.';
 
   @override
   String get hintTorchOff => 'Flash disattivato in questa modalità.';

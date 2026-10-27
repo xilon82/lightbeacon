@@ -23,7 +23,7 @@ motore di lampeggio.**
 flutter pub get            # dipendenze
 flutter gen-l10n           # rigenera le traduzioni (obbligatorio dopo aver toccato lib/l10n/*.arb)
 flutter analyze            # deve essere pulito, zero warning
-flutter test               # 76 test, devono essere tutti verdi
+flutter test               # 88 test, devono essere tutti verdi
 flutter build apk --debug  # verifica che compili
 ```
 

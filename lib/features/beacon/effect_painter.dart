@@ -27,8 +27,11 @@ class EffectPainter extends CustomPainter {
     final rect = Offset.zero & size;
     final primary = config.primaryColor;
     final secondary = config.secondaryColor;
+    // A steady pattern cannot drive strobe/alternate: painting them would
+    // freeze the screen on the primary colour, so fall back to a solid fill.
+    final effect = config.effectSupported ? config.effect : ScreenEffect.solid;
 
-    switch (config.effect) {
+    switch (effect) {
       case ScreenEffect.solid:
         _fill(canvas, rect, primary);
       case ScreenEffect.pulse:

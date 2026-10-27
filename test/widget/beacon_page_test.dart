@@ -137,6 +137,57 @@ void main() {
     );
   });
 
+  testWidgets('steady pattern hides the pattern-driven screen effects', (
+    tester,
+  ) async {
+    await _pumpBeacon(
+      tester,
+      config: BeaconConfig.forMode(BeaconMode.combo),
+    );
+
+    await tester.tap(find.byIcon(Icons.tune));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+
+    expect(find.text('Strobo'), findsNothing);
+    expect(find.text('Alternato'), findsNothing);
+    expect(
+      find.descendant(
+        of: find.byType(ControlSheet),
+        matching: find.text('Pulsazione'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.text(
+        'Con il flash fisso Strobo e Alternato non hanno un ciclo da seguire: '
+        'lo schermo resta di un colore pieno.',
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('switching to a steady pattern drops a frozen effect', (
+    tester,
+  ) async {
+    final container = await _pumpBeacon(
+      tester,
+      config: BeaconConfig.forMode(BeaconMode.strobe),
+    );
+
+    await tester.tap(find.byIcon(Icons.tune));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+
+    await tester.tap(find.text('Fisso'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+
+    final config = container.read(beaconConfigProvider);
+    expect(config.pattern, FlashPattern.steady);
+    expect(config.effect, ScreenEffect.solid);
+  });
+
   testWidgets('saving a preset from the control sheet persists it', (
     tester,
   ) async {

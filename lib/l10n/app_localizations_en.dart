@@ -167,7 +167,8 @@ class AppLocalizationsEn extends AppLocalizations {
       'The flash stays on steadily: frequency and pulse length do not apply.';
 
   @override
-  String get hintSteadyScreen => 'The screen stays a solid color.';
+  String get hintSteadyScreen =>
+      'With a steady flash, Strobe and Alternate have no cycle to follow: the screen stays a solid color.';
 
   @override
   String get hintTorchOff => 'Flash is off in this mode.';

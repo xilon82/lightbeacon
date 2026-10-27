@@ -74,6 +74,59 @@ void main() {
     });
   });
 
+  group('BeaconConfig effect availability', () {
+    test('a steady pattern cannot drive strobe or alternate', () {
+      final config = BeaconConfig.forMode(
+        BeaconMode.combo,
+      ).copyWith(effect: ScreenEffect.alternate);
+
+      expect(config.pattern, FlashPattern.steady);
+      expect(config.availableEffects, isNot(contains(ScreenEffect.strobe)));
+      expect(config.availableEffects, isNot(contains(ScreenEffect.alternate)));
+      expect(config.availableEffects, contains(ScreenEffect.pulse));
+      expect(config.availableEffects, contains(ScreenEffect.solid));
+    });
+
+    test('a blinking pattern offers every effect', () {
+      final config = BeaconConfig.forMode(BeaconMode.strobe);
+      expect(config.availableEffects, ScreenEffect.values);
+    });
+
+    test('normalized replaces an effect the pattern cannot drive', () {
+      final config = BeaconConfig.forMode(
+        BeaconMode.combo,
+      ).copyWith(effect: ScreenEffect.strobe);
+
+      expect(config.normalized.effect, ScreenEffect.solid);
+    });
+
+    test('normalized keeps an effect the pattern can drive', () {
+      final config = BeaconConfig.forMode(
+        BeaconMode.combo,
+      ).copyWith(effect: ScreenEffect.pulse);
+
+      expect(config.normalized, same(config));
+    });
+
+    test('a steady pattern with strobe is not considered animated', () {
+      final config = BeaconConfig.forMode(
+        BeaconMode.combo,
+      ).copyWith(effect: ScreenEffect.strobe);
+
+      expect(config.screenAnimated, isFalse);
+      expect(config.syncRelevant, isFalse);
+    });
+
+    test('deserialization normalizes a frozen effect', () {
+      final restored = BeaconConfig.fromJson(const {
+        'pattern': 'steady',
+        'effect': 'alternate',
+      });
+
+      expect(restored.effect, ScreenEffect.solid);
+    });
+  });
+
   group('BeaconConfig.forMode', () {
     test('torch mode keeps the screen off', () {
       final config = BeaconConfig.forMode(BeaconMode.torch);

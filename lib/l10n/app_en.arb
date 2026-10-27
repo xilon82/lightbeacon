@@ -73,7 +73,7 @@
   "controlScreenToggleDesc": "Use the display as a colored light",
 
   "hintSteadyTorch": "The flash stays on steadily: frequency and pulse length do not apply.",
-  "hintSteadyScreen": "The screen stays a solid color.",
+  "hintSteadyScreen": "With a steady flash, Strobe and Alternate have no cycle to follow: the screen stays a solid color.",
   "hintTorchOff": "Flash is off in this mode.",
   "hintScreenOff": "Screen is off in this mode.",
   "hintSyncNeedsBoth": "Only applies when both flash and screen are on and animated.",
