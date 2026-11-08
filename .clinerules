@@ -1,0 +1,149 @@
+# .clinerules
+
+Vincoli operativi per chi scrive codice in questo repository.
+
+La mappa tecnica è in `AGENTS.md`, la documentazione utente in `README.md`, lo
+stato delle best practice e i debiti aperti in `docs/BEST_PRACTICES.md`. Qui
+sta solo ciò che è vincolante e specifico di LightBeacon: niente cronaca,
+niente duplicazioni.
+
+---
+
+## Progetto
+
+App Android in Flutter che trasforma il telefono in un segnale di visibilità:
+flash lampeggiante, schermo colorato con effetti, torcia fissa. Il perché delle
+scelte tecniche è in `docs/PLAN.md`: leggilo prima di toccare il motore di
+lampeggio.
+
+```
+lib/core/       clock monotono, tema
+lib/domain/     engine (edge clock, pattern, fase, jitter), models, repositories
+lib/platform/   seam TorchController / ScreenController (unico punto che parla coi plugin)
+lib/features/   home, beacon, presets, settings, onboarding
+lib/providers/  stato Riverpod
+lib/l10n/       ARB it/en + file generati (committati)
+test/           engine, domain, features, widget
+tools/          generate_icons.py
+```
+
+---
+
+## Comandi
+
+Copiati da `pubspec.yaml` e dalla CI: se cambiano, aggiorna anche qui.
+
+```bash
+flutter pub get
+flutter gen-l10n              # obbligatorio dopo ogni modifica a lib/l10n/*.arb
+flutter analyze               # deve restare "No issues found!"
+flutter test                  # tutti verdi
+flutter build apk --debug     # verifica che compili
+```
+
+Verifica sul device, obbligatoria per ogni modifica al motore:
+
+```bash
+adb logcat -c && sleep 10
+adb logcat -d | grep setTorchModeStrength
+```
+
+---
+
+## Stile
+
+- Dart 3.11 / Flutter 3.41 (vincolo in `environment.sdk`). Codice, nomi e
+  messaggi di commit in inglese; documentazione utente in italiano.
+- `const` e modelli immutabili: `BeaconConfig` e `AppSettings` hanno `copyWith`.
+- Stato applicativo solo via Riverpod `Notifier`/`NotifierProvider`. `setState`
+  è ammesso per lo stato effimero di un widget (fase locale, HUD, testo di
+  errore), mai per stato condiviso.
+- API moderne già in uso, non tornare indietro: `withValues(alpha:)` invece di
+  `withOpacity`, `MediaQuery.disableAnimationsOf(context)`,
+  `PopScope.onPopInvokedWithResult`, `ref.mounted` dopo ogni `await`.
+- Errori di piattaforma: cattura e degrada (best-effort). Non propagarli alla UI
+  se l'utente non può farci nulla. Nessun `print` nel codice applicativo.
+- Nessuna dipendenza nuova senza aver verificato `environment.sdk` su pub.dev
+  contro Dart 3.11. Se richiede Flutter > 3.41, pinna la versione e scrivi il
+  perché accanto nel `pubspec.yaml` (come per `torch_light`/`wakelock_plus`).
+- Script in `tools/`: `pathlib` e encoding esplicito. Lo script attuale usa
+  ancora `os.path`: è debito registrato in `docs/BEST_PRACTICES.md`, non un
+  esempio da copiare.
+
+---
+
+## Regole apprese
+
+Solo errori realmente accaduti nel progetto. Dettaglio in `docs/PLAN.md` §13-bis.
+
+1. Gli offset degli edge si scalano sul **ciclo**, non su 1 s:
+   `fraction * cycle.inMicroseconds`.
+2. Dentro `PopScope(canPop: false)` mai `maybePop()`: `Navigator.pop()`
+   incondizionato più una guardia `_stopping`.
+3. Niente `ref.read`/`ref.watch` nel `Ticker`: engine e clock si risolvono una
+   volta in `initState`.
+4. Nel percorso di stop nessuna chiamata di piattaforma attesa: wakelock e
+   luminosità sono fire-and-forget con `catchError`.
+5. Un pattern con un solo impulso ha bisogno di un ramo dedicato, altrimenti il
+   duty cycle viene ignorato.
+6. Un `TextEditingController` vive in uno `StatefulWidget` dedicato, non nel
+   builder di un dialog.
+7. Gli effetti guidati dal pattern (`strobe`, `alternate`) non sono offerti con
+   `steady`: degradano a `solid` via `BeaconConfig.normalized`.
+
+---
+
+## Workflow: gate prima del commit
+
+```bash
+flutter gen-l10n && git diff --exit-code lib/l10n/   # solo se hai toccato gli ARB
+flutter analyze
+flutter test
+```
+
+Tutti devono passare. Se hai toccato il motore, aggiungi la verifica sul device
+con `adb logcat`: i test unitari non catturano errori di scala.
+
+Ogni bug corretto richiede un test di regressione che fallirebbe senza la
+correzione.
+
+---
+
+## Git
+
+- Mai `git commit` o `git push` senza conferma esplicita: mostra prima
+  `git status --short` e il messaggio proposto, poi attendi l'ok. Un ok vale per
+  quel commit, non come via libera permanente.
+- `--force`, `--amend`, `reset --hard`, `clean -fd` e riscritture di storia:
+  sempre da chiedere, anche dopo un push normale già autorizzato.
+- Messaggi in inglese: `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`.
+
+---
+
+## Dove va una lezione nuova
+
+| Lezione | Dove |
+|---|---|
+| Vincolo operativo, errore da non ripetere, gate, policy git | questo file |
+| Architettura, invarianti, "come estendere", mappa file | `AGENTS.md` |
+| Come si usa l'app: requisiti, build, troubleshooting | `README.md` |
+| Perché di una scelta puntuale | commento nel codice |
+| Best practice di una tecnologia, scostamento, debito | `docs/BEST_PRACTICES.md` |
+
+Scrivi la regola riutilizzabile, non il diario della modifica. Regola pratica:
+**se la regola è falsa in un altro progetto va qui; se è vera ovunque va nelle
+regole globali di Cline** (`~/.cline/rules`).
+
+---
+
+## Cosa NON fare
+
+- Non aggiungere il blu alla palette: `BeaconPalette` non lo espone e un test lo
+  verifica.
+- Non superare 10 Hz; duty cycle mai sotto 5% o sopra 95%.
+- Non usare `Timer.periodic` o `sleep(period)` cumulativo per la torcia.
+- Non mettere logica di timing nella UI.
+- Non chiamare i plugin di piattaforma fuori dai controller.
+- Non usare `pumpAndSettle()` nei test che montano `BeaconPage`.
+- Non introdurre stringhe non tradotte.
+- Non dichiarare "funziona" senza averlo verificato sul device fisico.

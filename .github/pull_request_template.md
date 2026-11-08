@@ -15,4 +15,4 @@
       `adb logcat -d | grep setTorchModeStrength`
 - [ ] Nessuna stringa hardcoded nella UI
 - [ ] Nessun colore blu aggiunto alla palette
-- [ ] Ho letto [AGENTS.md](../AGENTS.md)
+- [ ] Ho letto [`.clinerules`](../.clinerules) e [AGENTS.md](../AGENTS.md)

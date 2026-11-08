@@ -30,7 +30,7 @@ strada.
 ### Controlli
 
 - **Frequenza** 0.5 – 10 Hz
-- **Durata impulso** (duty cycle) 10 – 90%
+- **Durata impulso** (duty cycle) 5 – 95%
 - **Pattern**: singolo, doppio, triplo, SOS, fisso
 - **Effetti schermo**: pieno, pulsazione, strobo, alternato, scansione, arcobaleno
 - **Colori**: bianco, ambra, rosso, verde, ciano, magenta
@@ -112,19 +112,30 @@ flutter build apk --release --split-per-abi
 
 ---
 
-## Test
+## Sviluppo e test
 
 ```bash
-flutter test              # 88 test: engine, modelli, widget, painter
+flutter pub get
+flutter gen-l10n          # dopo ogni modifica a lib/l10n/*.arb
 flutter analyze           # deve essere pulito
+flutter test              # engine, modelli, widget, painter
 ```
 
 | Area | Cosa viene verificato |
 |---|---|
 | `test/engine/` | Matematica dei pattern, fase, compensazione del drift, jitter monitor |
-| `test/domain/` | Serializzazione config, migrazioni, preset predefiniti, effetti disponibili |
+| `test/domain/` | Serializzazione config, preset predefiniti, guardie di sicurezza |
 | `test/features/` | Rendering degli effetti a fasi note (colore effettivamente dipinto) |
 | `test/widget/` | Onboarding, home, schermata beacon, pannello controlli, salvataggio preset |
+
+Le regole di lavoro (gate prima del commit, convenzioni, cosa non fare) stanno in
+[`.clinerules`](.clinerules); l'architettura, le checklist "come estendere" e la
+mappa dei file in [AGENTS.md](AGENTS.md); lo stato delle best practice e i
+debiti tecnici aperti in [docs/BEST_PRACTICES.md](docs/BEST_PRACTICES.md).
+
+> Icona e splash sono già committati in `android/app/src/main/res/`. Per
+> rigenerarli serve **Python 3 + Pillow** (`python tools/generate_icons.py`): è
+> uno strumento di sviluppo, non un requisito per compilare o usare l'app.
 
 ---
 
