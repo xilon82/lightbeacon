@@ -54,6 +54,8 @@ adb logcat -d | grep setTorchModeStrength
 
 - Dart 3.11 / Flutter 3.41 (vincolo in `environment.sdk`). Codice, nomi e
   messaggi di commit in inglese; documentazione utente in italiano.
+- Il codice è formattato con `dart format` (stile *tall* di Dart 3.11): dopo
+  aver toccato un file, riformattalo. La CI verifica `lib` e `test`.
 - `const` e modelli immutabili: `BeaconConfig` e `AppSettings` hanno `copyWith`.
 - Stato applicativo solo via Riverpod `Notifier`/`NotifierProvider`. `setState`
   è ammesso per lo stato effimero di un widget (fase locale, HUD, testo di
@@ -96,6 +98,7 @@ Solo errori realmente accaduti nel progetto. Dettaglio in `docs/PLAN.md` §13-bi
 ## Workflow: gate prima del commit
 
 ```bash
+dart format lib test                                 # deve essere un no-op
 flutter gen-l10n && git diff --exit-code lib/l10n/   # solo se hai toccato gli ARB
 flutter analyze
 flutter test

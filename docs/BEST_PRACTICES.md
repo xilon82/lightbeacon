@@ -21,12 +21,12 @@ Legenda: ✅ rispettato · ⚠️ parziale o scelta consapevole da rivalutare ·
 |---|---|---|---|
 | `flutter analyze` pulito | ✅ | `No issues found!` | niente |
 | `flutter_lints` come base | ✅ | `analysis_options.yaml` include `package:flutter_lints/flutter.yaml` | valutare regole extra (`prefer_single_quotes`) solo se si riformatta |
-| Codice formattato con `dart format` | ⚠️ | `dart format --output=none --set-exit-if-changed lib test tools` → 23 file su 38 cambierebbero (stile *tall* introdotto da Dart 3.7) | **D1**: riformattare in un branch dedicato, poi gate in CI |
+| Codice formattato con `dart format` | ✅ | `dart format --output=none --set-exit-if-changed lib test` pulito (stile *tall* di Dart 3.11); step "Verify formatting" in CI | niente |
 | Immutabilità e `const` | ✅ | modelli `const`/`final` con `copyWith`; widget `const` dove possibile | niente |
 | API non deprecate | ✅ | `withValues(alpha:)`, `MediaQuery.disableAnimationsOf`, `PopScope.onPopInvokedWithResult`, `WidgetStateProperty`, `Color.toARGB32()` | niente |
 | Lifecycle corretto | ✅ | `Ticker` creato in `initState`, `dispose()` chiamato; `mounted`/`ref.mounted` dopo ogni `await` | niente |
 | Nessun `print` nel codice applicativo | ✅ | `print` solo in `tools/generate_icons.py` (CLI) | niente |
-| Accessibilità | ⚠️ | `Semantics` sulle etichette colore, target ≥ 56 dp (`AppTheme.minTouchTarget`), rispetto di `disableAnimations` | **D6**: prova TalkBack su device non registrata |
+| Accessibilità | ⚠️ | `Semantics` sulle etichette colore, target ≥ 56 dp (`AppTheme.minTouchTarget`), rispetto di `disableAnimations` | **D4**: prova TalkBack su device non registrata |
 
 ---
 
@@ -39,7 +39,7 @@ Legenda: ✅ rispettato · ⚠️ parziale o scelta consapevole da rivalutare ·
 | `ref.mounted` dopo un `await` | ✅ | `_probeTorch`, `_onEngineError`, `_onTimeout` | niente |
 | Fire-and-forget con `unawaited` | ✅ | `_persist`, `_setWakelock`, `updateConfig` | niente |
 | Provider sovrascritti nei test | ✅ | `torchControllerProvider`, `screenControllerProvider`, `sharedPreferencesProvider` | niente |
-| Stato senza riferimenti mutabili condivisi | ⚠️ | `BeaconSessionNotifier.engine` è un `late final` esposto: `BeaconPage` legge `engine.startedAt` e `engine.cycle` | **D7**: valutare se portare `startedAt`/`cycle` dentro `BeaconSessionState` |
+| Stato senza riferimenti mutabili condivisi | ⚠️ | `BeaconSessionNotifier.engine` è un `late final` esposto: `BeaconPage` legge `engine.startedAt` e `engine.cycle` | **D5**: valutare se portare `startedAt`/`cycle` dentro `BeaconSessionState` |
 | Codegen (`riverpod_generator`) | ⚠️ | provider scritti a mano | scelta consapevole: meno dipendenze, meno magia. Si rivaluta se i provider superano la decina |
 
 ---
@@ -52,7 +52,7 @@ Legenda: ✅ rispettato · ⚠️ parziale o scelta consapevole da rivalutare ·
 | Parità delle chiavi | ✅ | 136 chiavi per `app_it.arb` e 136 per `app_en.arb`, nessuna differenza | niente |
 | Nessuna stringa hardcoded nella UI | ✅ | grep di `Text('…')` in `lib/`: nessun risultato | niente |
 | File generati aggiornati | ✅ | committati in `lib/l10n/`, CI esegue `git diff --exit-code lib/l10n/` | niente |
-| Descrizioni `@chiave` per i traduttori | ⚠️ | presenti solo per 6 chiavi su 136 (`controlFrequencyValue`, `controlDutyValue`, `controlBrightnessValue`, `savePresetDefaultName`, `timeoutMinutes`, `settingsVersion`) | **D3**: obbligatorie per le chiavi nuove con placeholder, niente retrofit massivo |
+| Descrizioni `@chiave` per i traduttori | ⚠️ | presenti solo per 6 chiavi su 136 (`controlFrequencyValue`, `controlDutyValue`, `controlBrightnessValue`, `savePresetDefaultName`, `timeoutMinutes`, `settingsVersion`) | **D2**: obbligatorie per le chiavi nuove con placeholder, niente retrofit massivo |
 | Locale di sistema + override | ✅ | `AppSettings.localeCode`, `LightBeaconApp.locale` | niente |
 
 ---
@@ -64,7 +64,7 @@ Legenda: ✅ rispettato · ⚠️ parziale o scelta consapevole da rivalutare ·
 | Dati versionati | ✅ | `schemaVersion` in ogni `toJson`, chiavi `app_settings_v1` / `last_config_v1` / `custom_presets_v1` | niente |
 | Degradazione su dati corrotti | ✅ | `SettingsRepository` fa `try/catch` e torna ai default invece di crashare | niente |
 | Clamp in lettura | ✅ | `BeaconConfig.fromJson`, `AppSettings.fromJson` | niente |
-| API raccomandata dal pacchetto | ⚠️ | usa l'API legacy `SharedPreferences.getInstance()`; il pacchetto 2.5 raccomanda `SharedPreferencesAsync`/`SharedPreferencesWithCache` | **D2**: migrare quando si tocca la persistenza |
+| API raccomandata dal pacchetto | ⚠️ | usa l'API legacy `SharedPreferences.getInstance()`; il pacchetto 2.5 raccomanda `SharedPreferencesAsync`/`SharedPreferencesWithCache` | **D1**: migrare quando si tocca la persistenza |
 | Nessun dato sensibile | ✅ | solo preferenze e configurazioni | niente |
 
 ---
@@ -90,8 +90,8 @@ Legenda: ✅ rispettato · ⚠️ parziale o scelta consapevole da rivalutare ·
 | Tempo controllabile | ✅ | `FakeClock` + `TimerFactory` in `lib/core/clock/clock.dart` | niente |
 | Niente `pumpAndSettle` con `Ticker` attivo | ✅ | solo `tester.pump()` con durate esplicite | niente |
 | Test di regressione per ogni bug | ✅ | i bug in `docs/PLAN.md` §13-bis hanno test dedicati | niente |
-| Golden test del rendering | ⚠️ | `docs/PLAN.md` §14 li prevede; oggi il painter è verificato campionando il pixel in alto a sinistra | **D5**: golden su fasi note, se il rendering diventa più complesso |
-| Copertura misurata | ⚠️ | `flutter test --coverage` non è in CI | **D8**: valutare `--coverage` + soglia, senza bloccare la build |
+| Golden test del rendering | ⚠️ | `docs/PLAN.md` §14 li prevede; oggi il painter è verificato campionando il pixel in alto a sinistra | **D3**: golden su fasi note, se il rendering diventa più complesso |
+| Copertura misurata | ⚠️ | `flutter test --coverage` non è in CI | **D6**: valutare `--coverage` + soglia, senza bloccare la build |
 
 ---
 
@@ -103,12 +103,12 @@ Legenda: ✅ rispettato · ⚠️ parziale o scelta consapevole da rivalutare ·
 | Cache delle dipendenze | ✅ | `cache: true` in `flutter-action` | niente |
 | Artefatti generati verificati | ✅ | `flutter gen-l10n` + `git diff --exit-code lib/l10n/` | niente |
 | Smoke build | ✅ | `flutter build apk --debug` + upload artefatto | niente |
-| Gate di formato | ❌ | nessuno step `dart format` | **D1** (dipende dalla riformattazione) |
+| Gate di formato | ✅ | step "Verify formatting": `dart format --output=none --set-exit-if-changed lib test` | niente |
 | Info dell'analyzer bloccanti | ✅ | `flutter analyze --fatal-infos` in CI (verificato in locale: zero issue) | niente |
 | Permessi minimi del workflow | ✅ | `permissions: contents: read` | niente |
 | Cancellazione dei run superati | ✅ | `concurrency` con `cancel-in-progress: true` | niente |
 | Trigger sui branch di lavoro | ✅ | `main` e `release/**` per push e pull request | niente |
-| Aggiornamento delle action | ⚠️ | nessun Dependabot | **D4**: `dependabot.yml` per `github-actions` e `pub` |
+| Aggiornamento di dipendenze e action | ✅ | `.github/dependabot.yml`: weekly su `pub` e `github-actions`, con `ignore` su `torch_light`/`wakelock_plus` | niente |
 
 ---
 
@@ -129,9 +129,9 @@ Legenda: ✅ rispettato · ⚠️ parziale o scelta consapevole da rivalutare ·
 | Pratica | Stato | Evidenza | Azione |
 |---|---|---|---|
 | Script eseguibile e documentato | ✅ | docstring con comandi e output, `main()` + `if __name__ == "__main__"` | niente |
-| `pathlib` invece di `os.path` | ⚠️ | `tools/generate_icons.py` usa `os.path.join` | **D9**: convertire quando lo si tocca |
-| Ignore degli artefatti Python | ⚠️ | `.gitignore` copre `*.pyc` ma non `__pycache__/` | **D9**: aggiungere la voce |
-| Dipendenze dichiarate | ⚠️ | Pillow è citato nel README, ma nessun `requirements.txt` | **D9**: `tools/requirements.txt` |
+| `pathlib` invece di `os.path` | ⚠️ | `tools/generate_icons.py` usa `os.path.join` | **D7**: convertire quando lo si tocca |
+| Ignore degli artefatti Python | ⚠️ | `.gitignore` copre `*.pyc` ma non `__pycache__/` | **D7**: aggiungere la voce |
+| Dipendenze dichiarate | ⚠️ | Pillow è citato nel README, ma nessun `requirements.txt` | **D7**: `tools/requirements.txt` |
 
 ---
 
@@ -139,13 +139,11 @@ Legenda: ✅ rispettato · ⚠️ parziale o scelta consapevole da rivalutare ·
 
 | # | Debito | Azione | Dove |
 |---|---|---|---|
-| D1 | Formattazione non allineata a `dart format` (23 file) | branch dedicato + gate in CI | questo file, §Flutter |
-| D2 | `shared_preferences` su API legacy | migrare a `SharedPreferencesAsync`/`WithCache` | §Persistenza |
-| D3 | Descrizioni `@chiave` ARB quasi assenti | obbligatorie per le chiavi nuove | §Localizzazione |
-| D4 | Nessun Dependabot | `dependabot.yml` per actions e pub | §CI/CD |
-| D5 | Nessun golden test sul painter | golden su fasi note | §Testing |
-| D6 | Accessibilità non verificata con TalkBack | prova su device e annotazione | §Flutter |
-| D7 | `engine` esposto dal notifier | valutare `startedAt`/`cycle` nello stato | §Riverpod |
-| D8 | Copertura non misurata | `flutter test --coverage` in CI | §Testing |
-| D9 | `tools/generate_icons.py` fuori standard (`os.path`, Pillow non dichiarato, `__pycache__/`) | conversione a `pathlib` + requirements + ignore | §Strumenti Python |
+| D1 | `shared_preferences` su API legacy | migrare a `SharedPreferencesAsync`/`WithCache` | §Persistenza |
+| D2 | Descrizioni `@chiave` ARB quasi assenti | obbligatorie per le chiavi nuove | §Localizzazione |
+| D3 | Nessun golden test sul painter | golden su fasi note | §Testing |
+| D4 | Accessibilità non verificata con TalkBack | prova su device e annotazione | §Flutter |
+| D5 | `engine` esposto dal notifier | valutare `startedAt`/`cycle` nello stato | §Riverpod |
+| D6 | Copertura non misurata | `flutter test --coverage` in CI | §Testing |
+| D7 | `tools/generate_icons.py` fuori standard (`os.path`, Pillow non dichiarato, `__pycache__/`) | conversione a `pathlib` + requirements + ignore | §Strumenti Python |
 

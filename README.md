@@ -117,6 +117,7 @@ flutter build apk --release --split-per-abi
 ```bash
 flutter pub get
 flutter gen-l10n          # dopo ogni modifica a lib/l10n/*.arb
+dart format lib test      # stile del formatter di Dart 3.11
 flutter analyze           # deve essere pulito
 flutter test              # engine, modelli, widget, painter
 ```

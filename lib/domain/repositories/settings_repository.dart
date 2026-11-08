@@ -24,7 +24,9 @@ class SettingsRepository {
     if (raw == null) return const AppSettings();
     try {
       final decoded = jsonDecode(raw);
-      if (decoded is Map<String, Object?>) return AppSettings.fromJson(decoded);
+      if (decoded is Map<String, Object?>) {
+        return AppSettings.fromJson(decoded);
+      }
     } catch (_) {
       // Corrupted entry: fall back to defaults rather than crashing.
     }
@@ -39,7 +41,9 @@ class SettingsRepository {
     if (raw == null) return null;
     try {
       final decoded = jsonDecode(raw);
-      if (decoded is Map<String, Object?>) return BeaconConfig.fromJson(decoded);
+      if (decoded is Map<String, Object?>) {
+        return BeaconConfig.fromJson(decoded);
+      }
     } catch (_) {
       // Ignore and fall back to the mode default.
     }
