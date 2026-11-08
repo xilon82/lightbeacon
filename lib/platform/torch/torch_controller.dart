@@ -25,8 +25,9 @@ class PluginTorchController implements TorchController {
     if (_availability != TorchAvailability.unknown) return _availability;
     try {
       final available = await TorchLight.isTorchAvailable();
-      _availability =
-          available ? TorchAvailability.available : TorchAvailability.unavailable;
+      _availability = available
+          ? TorchAvailability.available
+          : TorchAvailability.unavailable;
     } catch (_) {
       _availability = TorchAvailability.unavailable;
     }

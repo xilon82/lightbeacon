@@ -34,10 +34,7 @@ Future<ProviderContainer> _pumpApp(
 
 void main() {
   testWidgets('shows the safety notice on first run', (tester) async {
-    await _pumpApp(
-      tester,
-      settings: const AppSettings(localeCode: 'it'),
-    );
+    await _pumpApp(tester, settings: const AppSettings(localeCode: 'it'));
 
     expect(find.byType(SafetyPage), findsOneWidget);
     expect(find.byType(HomePage), findsNothing);
@@ -47,10 +44,7 @@ void main() {
   testWidgets('accepting the safety notice reveals the home screen', (
     tester,
   ) async {
-    await _pumpApp(
-      tester,
-      settings: const AppSettings(localeCode: 'it'),
-    );
+    await _pumpApp(tester, settings: const AppSettings(localeCode: 'it'));
 
     await tester.tap(find.text('Ho capito'));
     await tester.pumpAndSettle();
@@ -75,10 +69,7 @@ void main() {
   testWidgets('English locale is honoured', (tester) async {
     await _pumpApp(
       tester,
-      settings: const AppSettings(
-        safetyAcknowledged: true,
-        localeCode: 'en',
-      ),
+      settings: const AppSettings(safetyAcknowledged: true, localeCode: 'en'),
     );
 
     expect(find.text('Steady torch'), findsOneWidget);
@@ -88,10 +79,7 @@ void main() {
   testWidgets('every home card is reachable and labelled', (tester) async {
     await _pumpApp(
       tester,
-      settings: const AppSettings(
-        safetyAcknowledged: true,
-        localeCode: 'it',
-      ),
+      settings: const AppSettings(safetyAcknowledged: true, localeCode: 'it'),
     );
 
     for (final label in [

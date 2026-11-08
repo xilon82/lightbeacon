@@ -54,7 +54,11 @@ abstract final class BeaconLabels {
     return minutes <= 0 ? l10n.timeoutNone : l10n.timeoutMinutes(minutes);
   }
 
-  static String presetName(BuildContext context, String? nameKey, String? customName) {
+  static String presetName(
+    BuildContext context,
+    String? nameKey,
+    String? customName,
+  ) {
     if (customName != null && customName.isNotEmpty) return customName;
     final l10n = context.l10n;
     return switch (nameKey) {

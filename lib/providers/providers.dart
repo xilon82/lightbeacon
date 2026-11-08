@@ -195,8 +195,9 @@ class BeaconSessionNotifier extends Notifier<BeaconSessionState> {
   }
 
   Future<void> _probeTorch() async {
-    final availability =
-        await ref.read(torchControllerProvider).checkAvailability();
+    final availability = await ref
+        .read(torchControllerProvider)
+        .checkAvailability();
     if (!ref.mounted) return;
     state = state.copyWith(
       torchAvailable: availability == TorchAvailability.available,
@@ -218,11 +219,14 @@ class BeaconSessionNotifier extends Notifier<BeaconSessionState> {
     final settings = ref.read(settingsProvider);
     final screen = ref.read(screenControllerProvider);
 
-    state = state.copyWith(running: true, clearError: true, jitterWarning: false);
+    state = state.copyWith(
+      running: true,
+      clearError: true,
+      jitterWarning: false,
+    );
 
     if (config.screenEnabled) {
-      final brightness =
-          config.brightness.clamp(0.05, settings.brightnessCap);
+      final brightness = config.brightness.clamp(0.05, settings.brightnessCap);
       await screen.applyBrightness(brightness);
     } else {
       await screen.restore();

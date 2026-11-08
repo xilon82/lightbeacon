@@ -14,8 +14,10 @@ void main() {
     test('segments always cover exactly one cycle', () {
       for (final pattern in FlashPattern.values) {
         for (final duty in [0.1, 0.3, 0.5, 0.9]) {
-          final total = PatternBuilder.segments(pattern, duty)
-              .fold<double>(0, (sum, s) => sum + s.fraction);
+          final total = PatternBuilder.segments(
+            pattern,
+            duty,
+          ).fold<double>(0, (sum, s) => sum + s.fraction);
           expect(
             total,
             closeTo(1.0, 1e-9),
@@ -32,9 +34,10 @@ void main() {
         FlashPattern.triple,
       ]) {
         for (final duty in [0.2, 0.4, 0.6]) {
-          final onTime = PatternBuilder.segments(pattern, duty)
-              .where((s) => s.isOn)
-              .fold<double>(0, (sum, s) => sum + s.fraction);
+          final onTime = PatternBuilder.segments(
+            pattern,
+            duty,
+          ).where((s) => s.isOn).fold<double>(0, (sum, s) => sum + s.fraction);
           expect(onTime, closeTo(duty, 1e-9), reason: 'pattern=$pattern');
         }
       }
@@ -49,15 +52,17 @@ void main() {
 
     test('double and triple produce the requested number of pulses', () {
       expect(
-        PatternBuilder.segments(FlashPattern.double, 0.4)
-            .where((s) => s.isOn)
-            .length,
+        PatternBuilder.segments(
+          FlashPattern.double,
+          0.4,
+        ).where((s) => s.isOn).length,
         2,
       );
       expect(
-        PatternBuilder.segments(FlashPattern.triple, 0.4)
-            .where((s) => s.isOn)
-            .length,
+        PatternBuilder.segments(
+          FlashPattern.triple,
+          0.4,
+        ).where((s) => s.isOn).length,
         3,
       );
     });
@@ -91,13 +96,16 @@ void main() {
       expect(transitions.map((s) => s.isOn).toList(), [true, false]);
     });
 
-    test('SOS merges the trailing gap with the leading gap of the next cycle', () {
-      final transitions = PatternBuilder.transitions(FlashPattern.sos, 0.5);
-      // 9 pulses -> 9 on transitions, and the gaps between them merge into 8
-      // off transitions. The trailing word gap is the last off segment.
-      expect(transitions.where((s) => s.isOn).length, 9);
-      expect(transitions.last.isOn, isFalse);
-    });
+    test(
+      'SOS merges the trailing gap with the leading gap of the next cycle',
+      () {
+        final transitions = PatternBuilder.transitions(FlashPattern.sos, 0.5);
+        // 9 pulses -> 9 on transitions, and the gaps between them merge into 8
+        // off transitions. The trailing word gap is the last off segment.
+        expect(transitions.where((s) => s.isOn).length, 9);
+        expect(transitions.last.isOn, isFalse);
+      },
+    );
   });
 
   group('PatternBuilder.isOnAt', () {

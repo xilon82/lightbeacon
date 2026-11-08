@@ -202,9 +202,7 @@ void main() {
     scheduler.advance(const Duration(milliseconds: 300));
     final origin = engine.startedAt;
 
-    engine.updateConfig(
-      _config().copyWith(primaryColor: BeaconPalette.red),
-    );
+    engine.updateConfig(_config().copyWith(primaryColor: BeaconPalette.red));
 
     expect(engine.startedAt, origin);
     expect(engine.isRunning, isTrue);

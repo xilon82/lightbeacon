@@ -66,10 +66,7 @@ class ModeCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Icon(
-                  Icons.chevron_right,
-                  color: AppTheme.textSecondary,
-                ),
+                const Icon(Icons.chevron_right, color: AppTheme.textSecondary),
               ],
             ),
           ),

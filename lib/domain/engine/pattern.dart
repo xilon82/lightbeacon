@@ -19,15 +19,31 @@ class PatternSegment {
 abstract final class PatternBuilder {
   /// SOS timing in Morse units: dot = 1, dash = 3, intra-letter gap = 1,
   /// letter gap = 3, word gap = 7. Total = 34 units.
-  static const _sosUnits = <int>[1, 1, 1, 1, 1, 3, 3, 1, 3, 1, 3, 3, 1, 1, 1, 1, 1, 7];
+  static const _sosUnits = <int>[
+    1,
+    1,
+    1,
+    1,
+    1,
+    3,
+    3,
+    1,
+    3,
+    1,
+    3,
+    3,
+    1,
+    1,
+    1,
+    1,
+    1,
+    7,
+  ];
   static const _sosTotalUnits = 34;
 
   /// Full segment list for one cycle, including consecutive segments with the
   /// same state.
-  static List<PatternSegment> segments(
-    FlashPattern pattern,
-    double dutyCycle,
-  ) {
+  static List<PatternSegment> segments(FlashPattern pattern, double dutyCycle) {
     final duty = dutyCycle.clamp(0.05, 0.95);
     switch (pattern) {
       case FlashPattern.steady:
@@ -109,12 +125,7 @@ abstract final class PatternBuilder {
   static List<PatternSegment> _sosSegments() {
     final out = <PatternSegment>[];
     for (var i = 0; i < _sosUnits.length; i++) {
-      out.add(
-        PatternSegment(
-          _sosUnits[i] / _sosTotalUnits,
-          isOn: i.isEven,
-        ),
-      );
+      out.add(PatternSegment(_sosUnits[i] / _sosTotalUnits, isOn: i.isEven));
     }
     return out;
   }

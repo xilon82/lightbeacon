@@ -11,9 +11,8 @@ import '../beacon/beacon_page.dart';
 class PresetsPage extends ConsumerWidget {
   const PresetsPage({super.key});
 
-  static Route<void> route() => MaterialPageRoute<void>(
-    builder: (_) => const PresetsPage(),
-  );
+  static Route<void> route() =>
+      MaterialPageRoute<void>(builder: (_) => const PresetsPage());
 
   Future<void> _apply(
     BuildContext context,
@@ -84,11 +83,7 @@ class _SectionHeader extends StatelessWidget {
 }
 
 class _PresetTile extends StatelessWidget {
-  const _PresetTile({
-    required this.preset,
-    required this.onTap,
-    this.onDelete,
-  });
+  const _PresetTile({required this.preset, required this.onTap, this.onDelete});
 
   final Preset preset;
   final VoidCallback onTap;

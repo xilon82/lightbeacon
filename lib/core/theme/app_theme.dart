@@ -16,15 +16,16 @@ abstract final class AppTheme {
   static const minTouchTarget = 56.0;
 
   static ThemeData get dark {
-    final scheme = ColorScheme.fromSeed(
-      seedColor: accent,
-      brightness: Brightness.dark,
-    ).copyWith(
-      surface: background,
-      primary: accent,
-      onPrimary: Colors.black,
-      error: danger,
-    );
+    final scheme =
+        ColorScheme.fromSeed(
+          seedColor: accent,
+          brightness: Brightness.dark,
+        ).copyWith(
+          surface: background,
+          primary: accent,
+          onPrimary: Colors.black,
+          error: danger,
+        );
 
     return ThemeData(
       useMaterial3: true,
@@ -71,17 +72,15 @@ abstract final class AppTheme {
               : textSecondary,
         ),
         trackColor: WidgetStateProperty.resolveWith(
-          (states) => states.contains(WidgetState.selected)
-              ? accent
-              : surfaceHigh,
+          (states) =>
+              states.contains(WidgetState.selected) ? accent : surfaceHigh,
         ),
       ),
       segmentedButtonTheme: SegmentedButtonThemeData(
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.resolveWith(
-            (states) => states.contains(WidgetState.selected)
-                ? accent
-                : surfaceHigh,
+            (states) =>
+                states.contains(WidgetState.selected) ? accent : surfaceHigh,
           ),
           foregroundColor: WidgetStateProperty.resolveWith(
             (states) => states.contains(WidgetState.selected)

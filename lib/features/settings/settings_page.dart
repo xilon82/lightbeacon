@@ -8,9 +8,8 @@ import '../../providers/providers.dart';
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
 
-  static Route<void> route() => MaterialPageRoute<void>(
-    builder: (_) => const SettingsPage(),
-  );
+  static Route<void> route() =>
+      MaterialPageRoute<void>(builder: (_) => const SettingsPage());
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

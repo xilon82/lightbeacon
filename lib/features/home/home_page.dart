@@ -13,7 +13,11 @@ import 'mode_card.dart';
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
-  Future<void> _start(BuildContext context, WidgetRef ref, BeaconMode mode) async {
+  Future<void> _start(
+    BuildContext context,
+    WidgetRef ref,
+    BeaconMode mode,
+  ) async {
     final configNotifier = ref.read(beaconConfigProvider.notifier);
     configNotifier.loadMode(mode);
     final config = ref.read(beaconConfigProvider);
@@ -57,9 +61,7 @@ class HomePage extends ConsumerWidget {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 20),
-            _ModeGrid(
-              onStart: (mode) => _start(context, ref, mode),
-            ),
+            _ModeGrid(onStart: (mode) => _start(context, ref, mode)),
             const SizedBox(height: 20),
             _TipCard(text: l10n.homeTip),
           ],
@@ -117,10 +119,7 @@ class _ModeGrid extends StatelessWidget {
 
     return Column(
       children: [
-        for (final card in cards) ...[
-          card,
-          const SizedBox(height: 12),
-        ],
+        for (final card in cards) ...[card, const SizedBox(height: 12)],
       ],
     );
   }

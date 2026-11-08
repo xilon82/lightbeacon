@@ -35,14 +35,22 @@ class EffectPainter extends CustomPainter {
       case ScreenEffect.solid:
         _fill(canvas, rect, primary);
       case ScreenEffect.pulse:
-        final wave = reduceMotion ? 0.75 : 0.5 + 0.5 * math.sin(phase * 2 * math.pi);
+        final wave = reduceMotion
+            ? 0.75
+            : 0.5 + 0.5 * math.sin(phase * 2 * math.pi);
         _fill(canvas, rect, primary.withValues(alpha: 0.35 + 0.65 * wave));
       case ScreenEffect.strobe:
-        final segments = PatternBuilder.segments(config.pattern, config.dutyCycle);
+        final segments = PatternBuilder.segments(
+          config.pattern,
+          config.dutyCycle,
+        );
         final on = PatternBuilder.isOnAt(segments, phase);
         _fill(canvas, rect, on ? primary : Colors.black);
       case ScreenEffect.alternate:
-        final segments = PatternBuilder.segments(config.pattern, config.dutyCycle);
+        final segments = PatternBuilder.segments(
+          config.pattern,
+          config.dutyCycle,
+        );
         final on = PatternBuilder.isOnAt(segments, phase);
         _fill(canvas, rect, on ? primary : secondary);
       case ScreenEffect.sweep:
@@ -70,9 +78,7 @@ class EffectPainter extends CustomPainter {
         primary.withValues(alpha: 0.0),
       ],
       stops: const [0.0, 0.5, 1.0],
-    ).createShader(
-      Rect.fromLTWH(center - band / 2, 0, band, rect.height),
-    );
+    ).createShader(Rect.fromLTWH(center - band / 2, 0, band, rect.height));
 
     canvas.drawRect(rect, Paint()..shader = shader);
   }

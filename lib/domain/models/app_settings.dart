@@ -45,10 +45,12 @@ class AppSettings {
   factory AppSettings.fromJson(Map<String, Object?> json) {
     final rawLocale = json['localeCode'];
     return AppSettings(
-      localeCode: rawLocale is String && rawLocale.isNotEmpty ? rawLocale : null,
+      localeCode: rawLocale is String && rawLocale.isNotEmpty
+          ? rawLocale
+          : null,
       safetyAcknowledged: json['safetyAcknowledged'] as bool? ?? false,
-      brightnessCap: (json['brightnessCap'] as num?)?.toDouble().clamp(0.1, 1.0) ??
-          0.8,
+      brightnessCap:
+          (json['brightnessCap'] as num?)?.toDouble().clamp(0.1, 1.0) ?? 0.8,
       keepAwake: json['keepAwake'] as bool? ?? true,
     );
   }

@@ -76,8 +76,7 @@ class BeaconConfig {
   bool get frequencyLocked => pattern == FlashPattern.sos;
 
   /// True when the torch actually blinks, so frequency and duty apply.
-  bool get torchFlashing =>
-      torchEnabled && pattern != FlashPattern.steady;
+  bool get torchFlashing => torchEnabled && pattern != FlashPattern.steady;
 
   /// True when the screen effect changes over time, so sync applies.
   ///
@@ -240,12 +239,20 @@ class BeaconConfig {
 
   factory BeaconConfig.fromJson(Map<String, Object?> json) {
     return BeaconConfig(
-      pattern: _enumByName(json['pattern'], FlashPattern.values, FlashPattern.single),
+      pattern: _enumByName(
+        json['pattern'],
+        FlashPattern.values,
+        FlashPattern.single,
+      ),
       frequencyHz: _asDouble(json['frequencyHz'], 2).clamp(0.5, 10.0),
       dutyCycle: _asDouble(json['dutyCycle'], 0.5).clamp(0.05, 0.95),
       primaryColor: Color(_asInt(json['primaryColor'], 0xFFFFFFFF)),
       secondaryColor: Color(_asInt(json['secondaryColor'], 0xFFFFB020)),
-      effect: _enumByName(json['effect'], ScreenEffect.values, ScreenEffect.strobe),
+      effect: _enumByName(
+        json['effect'],
+        ScreenEffect.values,
+        ScreenEffect.strobe,
+      ),
       brightness: _asDouble(json['brightness'], 0.8).clamp(0.1, 1.0),
       sync: _enumByName(json['sync'], SyncMode.values, SyncMode.inPhase),
       timeoutMinutes: _asInt(json['timeoutMinutes'], 0),

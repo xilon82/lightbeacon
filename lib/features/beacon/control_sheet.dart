@@ -142,151 +142,154 @@ class _ControlSheetState extends ConsumerState<ControlSheet> {
                     ),
                   ),
                 ),
-            // --- Flash -------------------------------------------------
-            _SectionTitle(l10n.controlSectionFlash),
-            _ToggleRow(
-              label: l10n.controlTorchToggle,
-              description: l10n.controlTorchToggleDesc,
-              value: config.torchEnabled,
-              onChanged: (v) => _update((c) => c.copyWith(torchEnabled: v)),
-            ),
-            if (!config.torchEnabled)
-              _Hint(l10n.hintTorchOff)
-            else ...[
-              _ChipRow<FlashPattern>(
-                label: l10n.controlPattern,
-                description: l10n.controlPatternDesc,
-                values: FlashPattern.values,
-                selected: config.pattern,
-                labelOf: (p) => BeaconLabels.pattern(context, p),
-                onSelected: (p) => _update((c) => c.copyWith(pattern: p)),
-              ),
-              const SizedBox(height: 16),
-              if (config.pattern == FlashPattern.steady)
-                _Hint(l10n.hintSteadyTorch)
-              else ...[
-                _SliderRow(
-                  label: l10n.controlFrequency,
-                  description: l10n.controlFrequencyDesc,
-                  valueLabel: config.frequencyLocked
-                      ? l10n.patternSos
-                      : l10n.controlFrequencyValue(
-                          config.frequencyHz.toStringAsFixed(1),
-                        ),
-                  value: config.frequencyHz.clamp(0.5, 10),
-                  min: 0.5,
-                  max: 10,
-                  divisions: 19,
-                  enabled: !config.frequencyLocked,
-                  onChanged: _onFrequencyChanged,
+                // --- Flash -------------------------------------------------
+                _SectionTitle(l10n.controlSectionFlash),
+                _ToggleRow(
+                  label: l10n.controlTorchToggle,
+                  description: l10n.controlTorchToggleDesc,
+                  value: config.torchEnabled,
+                  onChanged: (v) => _update((c) => c.copyWith(torchEnabled: v)),
                 ),
-                _SliderRow(
-                  label: l10n.controlDuty,
-                  description: l10n.controlDutyDesc,
-                  valueLabel: l10n.controlDutyValue(
-                    (config.dutyCycle * 100).round().toString(),
+                if (!config.torchEnabled)
+                  _Hint(l10n.hintTorchOff)
+                else ...[
+                  _ChipRow<FlashPattern>(
+                    label: l10n.controlPattern,
+                    description: l10n.controlPatternDesc,
+                    values: FlashPattern.values,
+                    selected: config.pattern,
+                    labelOf: (p) => BeaconLabels.pattern(context, p),
+                    onSelected: (p) => _update((c) => c.copyWith(pattern: p)),
                   ),
-                  value: config.dutyCycle,
-                  min: 0.1,
-                  max: 0.9,
-                  divisions: 16,
-                  onChanged: (v) => _update((c) => c.copyWith(dutyCycle: v)),
-                ),
-              ],
-            ],
+                  const SizedBox(height: 16),
+                  if (config.pattern == FlashPattern.steady)
+                    _Hint(l10n.hintSteadyTorch)
+                  else ...[
+                    _SliderRow(
+                      label: l10n.controlFrequency,
+                      description: l10n.controlFrequencyDesc,
+                      valueLabel: config.frequencyLocked
+                          ? l10n.patternSos
+                          : l10n.controlFrequencyValue(
+                              config.frequencyHz.toStringAsFixed(1),
+                            ),
+                      value: config.frequencyHz.clamp(0.5, 10),
+                      min: 0.5,
+                      max: 10,
+                      divisions: 19,
+                      enabled: !config.frequencyLocked,
+                      onChanged: _onFrequencyChanged,
+                    ),
+                    _SliderRow(
+                      label: l10n.controlDuty,
+                      description: l10n.controlDutyDesc,
+                      valueLabel: l10n.controlDutyValue(
+                        (config.dutyCycle * 100).round().toString(),
+                      ),
+                      value: config.dutyCycle,
+                      min: 0.1,
+                      max: 0.9,
+                      divisions: 16,
+                      onChanged: (v) =>
+                          _update((c) => c.copyWith(dutyCycle: v)),
+                    ),
+                  ],
+                ],
 
-            // --- Screen ------------------------------------------------
-            const SizedBox(height: 8),
-            _SectionTitle(l10n.controlSectionScreen),
-            _ToggleRow(
-              label: l10n.controlScreenToggle,
-              description: l10n.controlScreenToggleDesc,
-              value: config.screenEnabled,
-              onChanged: (v) => _update((c) => c.copyWith(screenEnabled: v)),
-            ),
-            if (!config.screenEnabled)
-              _Hint(l10n.hintScreenOff)
-            else ...[
-              _ChipRow<ScreenEffect>(
-                label: l10n.controlEffect,
-                description: l10n.controlEffectDesc,
-                values: config.availableEffects,
-                selected: config.effect,
-                labelOf: (e) => BeaconLabels.effect(context, e),
-                onSelected: (e) => _update((c) => c.copyWith(effect: e)),
-              ),
-              if (config.pattern == FlashPattern.steady)
-                _Hint(l10n.hintSteadyScreen),
-              const SizedBox(height: 16),
-              _ColorRow(
-                label: l10n.controlPrimaryColor,
-                selected: config.primaryColor,
-                onSelected: (c) =>
-                    _update((cfg) => cfg.copyWith(primaryColor: c)),
-              ),
-              if (config.effect == ScreenEffect.alternate ||
-                  config.effect == ScreenEffect.sweep) ...[
-                const SizedBox(height: 12),
-                _ColorRow(
-                  label: l10n.controlSecondaryColor,
-                  selected: config.secondaryColor,
-                  onSelected: (c) =>
-                      _update((cfg) => cfg.copyWith(secondaryColor: c)),
+                // --- Screen ------------------------------------------------
+                const SizedBox(height: 8),
+                _SectionTitle(l10n.controlSectionScreen),
+                _ToggleRow(
+                  label: l10n.controlScreenToggle,
+                  description: l10n.controlScreenToggleDesc,
+                  value: config.screenEnabled,
+                  onChanged: (v) =>
+                      _update((c) => c.copyWith(screenEnabled: v)),
                 ),
-              ],
-              const SizedBox(height: 8),
-              _SliderRow(
-                label: l10n.controlBrightness,
-                description: l10n.controlBrightnessDesc,
-                valueLabel: l10n.controlBrightnessValue(
-                  (config.brightness * 100).round().toString(),
-                ),
-                value: config.brightness.clamp(0.1, settings.brightnessCap),
-                min: 0.1,
-                max: settings.brightnessCap,
-                divisions: 18,
-                onChanged: (v) => _update((c) => c.copyWith(brightness: v)),
-              ),
-            ],
+                if (!config.screenEnabled)
+                  _Hint(l10n.hintScreenOff)
+                else ...[
+                  _ChipRow<ScreenEffect>(
+                    label: l10n.controlEffect,
+                    description: l10n.controlEffectDesc,
+                    values: config.availableEffects,
+                    selected: config.effect,
+                    labelOf: (e) => BeaconLabels.effect(context, e),
+                    onSelected: (e) => _update((c) => c.copyWith(effect: e)),
+                  ),
+                  if (config.pattern == FlashPattern.steady)
+                    _Hint(l10n.hintSteadyScreen),
+                  const SizedBox(height: 16),
+                  _ColorRow(
+                    label: l10n.controlPrimaryColor,
+                    selected: config.primaryColor,
+                    onSelected: (c) =>
+                        _update((cfg) => cfg.copyWith(primaryColor: c)),
+                  ),
+                  if (config.effect == ScreenEffect.alternate ||
+                      config.effect == ScreenEffect.sweep) ...[
+                    const SizedBox(height: 12),
+                    _ColorRow(
+                      label: l10n.controlSecondaryColor,
+                      selected: config.secondaryColor,
+                      onSelected: (c) =>
+                          _update((cfg) => cfg.copyWith(secondaryColor: c)),
+                    ),
+                  ],
+                  const SizedBox(height: 8),
+                  _SliderRow(
+                    label: l10n.controlBrightness,
+                    description: l10n.controlBrightnessDesc,
+                    valueLabel: l10n.controlBrightnessValue(
+                      (config.brightness * 100).round().toString(),
+                    ),
+                    value: config.brightness.clamp(0.1, settings.brightnessCap),
+                    min: 0.1,
+                    max: settings.brightnessCap,
+                    divisions: 18,
+                    onChanged: (v) => _update((c) => c.copyWith(brightness: v)),
+                  ),
+                ],
 
-            // --- Timing ------------------------------------------------
-            const SizedBox(height: 8),
-            _SectionTitle(l10n.controlSectionTiming),
-            if (config.syncRelevant)
-              _ChipRow<SyncMode>(
-                label: l10n.controlSync,
-                description: l10n.controlSyncDesc,
-                values: SyncMode.values,
-                selected: config.sync,
-                labelOf: (s) => BeaconLabels.sync(context, s),
-                onSelected: (s) => _update((c) => c.copyWith(sync: s)),
-              )
-            else
-              _Hint(l10n.hintSyncNeedsBoth),
-            const SizedBox(height: 16),
-            _ChipRow<int>(
-              label: l10n.controlTimeout,
-              description: l10n.controlTimeoutDesc,
-              values: const [0, 5, 15, 30, 60],
-              selected: config.timeoutMinutes,
-              labelOf: (m) => BeaconLabels.timeout(context, m),
-              onSelected: (m) => _update((c) => c.copyWith(timeoutMinutes: m)),
-            ),
-
-            const SizedBox(height: 24),
-            OutlinedButton.icon(
-              onPressed: _savePreset,
-              icon: const Icon(Icons.bookmark_add_outlined),
-              label: Text(l10n.savePresetAction),
-              style: OutlinedButton.styleFrom(
-                minimumSize: const Size.fromHeight(AppTheme.minTouchTarget),
-                foregroundColor: AppTheme.accent,
-                side: const BorderSide(color: AppTheme.accent),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
+                // --- Timing ------------------------------------------------
+                const SizedBox(height: 8),
+                _SectionTitle(l10n.controlSectionTiming),
+                if (config.syncRelevant)
+                  _ChipRow<SyncMode>(
+                    label: l10n.controlSync,
+                    description: l10n.controlSyncDesc,
+                    values: SyncMode.values,
+                    selected: config.sync,
+                    labelOf: (s) => BeaconLabels.sync(context, s),
+                    onSelected: (s) => _update((c) => c.copyWith(sync: s)),
+                  )
+                else
+                  _Hint(l10n.hintSyncNeedsBoth),
+                const SizedBox(height: 16),
+                _ChipRow<int>(
+                  label: l10n.controlTimeout,
+                  description: l10n.controlTimeoutDesc,
+                  values: const [0, 5, 15, 30, 60],
+                  selected: config.timeoutMinutes,
+                  labelOf: (m) => BeaconLabels.timeout(context, m),
+                  onSelected: (m) =>
+                      _update((c) => c.copyWith(timeoutMinutes: m)),
                 ),
-              ),
-            ),
+
+                const SizedBox(height: 24),
+                OutlinedButton.icon(
+                  onPressed: _savePreset,
+                  icon: const Icon(Icons.bookmark_add_outlined),
+                  label: Text(l10n.savePresetAction),
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(AppTheme.minTouchTarget),
+                    foregroundColor: AppTheme.accent,
+                    side: const BorderSide(color: AppTheme.accent),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -356,10 +359,7 @@ class _SavePresetDialogState extends State<_SavePresetDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: Text(l10n.commonCancel),
         ),
-        FilledButton(
-          onPressed: _submit,
-          child: Text(l10n.savePresetSave),
-        ),
+        FilledButton(onPressed: _submit, child: Text(l10n.savePresetSave)),
       ],
     );
   }
@@ -428,7 +428,11 @@ class _Hint extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.info_outline, size: 16, color: AppTheme.textSecondary),
+          const Icon(
+            Icons.info_outline,
+            size: 16,
+            color: AppTheme.textSecondary,
+          ),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
@@ -583,12 +587,17 @@ class _ChipRow<T> extends StatelessWidget {
                 backgroundColor: AppTheme.surfaceHigh,
                 selectedColor: AppTheme.accent,
                 labelStyle: TextStyle(
-                  color: value == selected ? Colors.black : AppTheme.textPrimary,
+                  color: value == selected
+                      ? Colors.black
+                      : AppTheme.textPrimary,
                   fontWeight: FontWeight.w600,
                   fontSize: 13,
                 ),
                 side: const BorderSide(color: AppTheme.outline),
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
               ),
           ],
         ),

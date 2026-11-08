@@ -175,12 +175,12 @@ class _BeaconPageState extends ConsumerState<BeaconPage>
                 text: l10n.beaconTorchUnavailable,
               ),
             if (session.jitterWarning)
-              _HudBanner(
-                icon: Icons.speed,
-                text: l10n.beaconJitterWarning,
-              ),
+              _HudBanner(icon: Icons.speed, text: l10n.beaconJitterWarning),
             if (session.error != null)
-              _HudBanner(icon: Icons.error_outline, text: l10n.beaconTorchError),
+              _HudBanner(
+                icon: Icons.error_outline,
+                text: l10n.beaconTorchError,
+              ),
             const Spacer(),
             // Dark pill with a light border: the screen behind can be any
             // color, including pure white, so the stop button must never rely

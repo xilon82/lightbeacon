@@ -13,9 +13,8 @@ import '../settings/settings_page.dart';
 class SafetyPage extends ConsumerWidget {
   const SafetyPage({super.key});
 
-  static Route<void> route() => MaterialPageRoute<void>(
-    builder: (_) => const SafetyPage(),
-  );
+  static Route<void> route() =>
+      MaterialPageRoute<void>(builder: (_) => const SafetyPage());
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

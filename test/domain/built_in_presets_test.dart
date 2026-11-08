@@ -21,7 +21,11 @@ void main() {
     test('no preset uses blue, which is reserved for emergency vehicles', () {
       for (final preset in BuiltInPresets.all) {
         expect(_isBlue(preset.config.primaryColor), isFalse, reason: preset.id);
-        expect(_isBlue(preset.config.secondaryColor), isFalse, reason: preset.id);
+        expect(
+          _isBlue(preset.config.secondaryColor),
+          isFalse,
+          reason: preset.id,
+        );
       }
     });
 

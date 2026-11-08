@@ -32,9 +32,7 @@ class LightBeaconApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: settings.safetyAcknowledged
-          ? const HomePage()
-          : const SafetyPage(),
+      home: settings.safetyAcknowledged ? const HomePage() : const SafetyPage(),
     );
   }
 }

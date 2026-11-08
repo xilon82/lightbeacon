@@ -4,7 +4,10 @@ import 'package:light_beacon/domain/engine/phase.dart';
 void main() {
   group('PhaseCalculator.phaseAt', () {
     test('starts at zero', () {
-      expect(PhaseCalculator.phaseAt(Duration.zero, const Duration(seconds: 1)), 0);
+      expect(
+        PhaseCalculator.phaseAt(Duration.zero, const Duration(seconds: 1)),
+        0,
+      );
     });
 
     test('is proportional to elapsed time', () {
@@ -28,7 +31,10 @@ void main() {
     });
 
     test('returns zero for a non-positive cycle', () {
-      expect(PhaseCalculator.phaseAt(const Duration(seconds: 3), Duration.zero), 0);
+      expect(
+        PhaseCalculator.phaseAt(const Duration(seconds: 3), Duration.zero),
+        0,
+      );
     });
   });
 

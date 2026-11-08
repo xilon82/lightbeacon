@@ -82,9 +82,9 @@ void main() {
 
   testWidgets('stop button ends the session', (tester) async {
     final container = await _pumpBeacon(tester);
-    await container.read(beaconSessionProvider.notifier).start(
-      container.read(beaconConfigProvider),
-    );
+    await container
+        .read(beaconSessionProvider.notifier)
+        .start(container.read(beaconConfigProvider));
     await tester.pump();
 
     expect(container.read(beaconSessionProvider).running, isTrue);
@@ -118,10 +118,7 @@ void main() {
   testWidgets('steady torch hides frequency and duty with an explanation', (
     tester,
   ) async {
-    await _pumpBeacon(
-      tester,
-      config: BeaconConfig.forMode(BeaconMode.torch),
-    );
+    await _pumpBeacon(tester, config: BeaconConfig.forMode(BeaconMode.torch));
 
     await tester.tap(find.byIcon(Icons.tune));
     await tester.pump();
@@ -140,10 +137,7 @@ void main() {
   testWidgets('steady pattern hides the pattern-driven screen effects', (
     tester,
   ) async {
-    await _pumpBeacon(
-      tester,
-      config: BeaconConfig.forMode(BeaconMode.combo),
-    );
+    await _pumpBeacon(tester, config: BeaconConfig.forMode(BeaconMode.combo));
 
     await tester.tap(find.byIcon(Icons.tune));
     await tester.pump();
@@ -251,10 +245,7 @@ void main() {
   });
 
   testWidgets('screen-only mode hides the flash controls', (tester) async {
-    await _pumpBeacon(
-      tester,
-      config: BeaconConfig.forMode(BeaconMode.screen),
-    );
+    await _pumpBeacon(tester, config: BeaconConfig.forMode(BeaconMode.screen));
 
     await tester.tap(find.byIcon(Icons.tune));
     await tester.pump();
@@ -264,9 +255,7 @@ void main() {
     expect(find.text('Pattern'), findsNothing);
   });
 
-  testWidgets('changing the pattern updates the shared config', (
-    tester,
-  ) async {
+  testWidgets('changing the pattern updates the shared config', (tester) async {
     final container = await _pumpBeacon(tester);
 
     await tester.tap(find.byIcon(Icons.tune));
@@ -277,10 +266,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
 
-    expect(
-      container.read(beaconConfigProvider).pattern,
-      FlashPattern.triple,
-    );
+    expect(container.read(beaconConfigProvider).pattern, FlashPattern.triple);
   });
 
   testWidgets('screen-only config keeps painting without a torch', (
