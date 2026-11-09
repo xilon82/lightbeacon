@@ -78,6 +78,7 @@ Legenda: ✅ rispettato · ⚠️ parziale o scelta consapevole da rivalutare ·
 | Accesso mediato da un seam | ✅ | `TorchController`, `ScreenController` + varianti `Noop*` | niente |
 | Errori di canale non bloccanti | ✅ | `_setWakelock` fire-and-forget, `ScreenController` in `try/catch`, `BeaconEngine.onError` | niente |
 | Funzionamento a schermo spento | ❌ | nessun foreground service: a schermo spento il beacon si ferma | fase 4 di `docs/PLAN.md` |
+| Notifica di sistema a ogni cambio torcia | ⚠️ | SystemUI posta `FLASHLIGHT_ONGOING` a ogni `setTorchMode` (26 notifiche per 26 accensioni): la tendina si aggiorna di continuo | mitigato: quando la finestra perde il focus il flash resta acceso fisso (`holdTorch`) e le notifiche si fermano |
 
 ---
 

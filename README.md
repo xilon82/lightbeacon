@@ -42,16 +42,28 @@ Il pannello controlli è **contestuale**: mostra solo le regolazioni che hanno
 effetto nella configurazione corrente, con una nota esplicativa quando un
 controllo non si applica.
 
-### Preset
+### Preset e modalità
 
 6 preset predefiniti (Pedone, Bici/monopattino, Auto in panne, Emergenza,
 Illuminazione, Cantiere) più preset personalizzati salvabili dal pannello
 controlli con un tocco.
 
+I preset predefiniti si possono **rinominare, sovrascrivere ed eliminare** come
+quelli tuoi, e riportare ai valori originali con "Ripristina originale". Le
+**modalità** della schermata iniziale (Strobo, Strada, SOS…) si possono
+**personalizzare**: il pannello controlli salva le modifiche sopra la modalità,
+e "Ripristina default" (o una pressione lunga sulla card) riporta i valori di
+fabbrica. In Impostazioni, "Ripristina impostazioni" rimette tutto a nuovo:
+modalità ai default, preset di fabbrica ripristinati, preset tuoi eliminati.
+
 ### Altro
 
 - Interfaccia **italiano + inglese**, con rilevamento automatico della lingua di
   sistema e override manuale
+- **Pausa fuori dall'app** (attiva di default): quando la tendina delle
+  notifiche o un'altra app coprono lo schermo il flash **resta acceso fisso**
+  invece di lampeggiare, così resti visibile e la tendina non si aggiorna a ogni
+  lampo. Al ritorno il lampeggio riprende; si può disattivare in Impostazioni
 - Onboarding di sicurezza al primo avvio
 - Solo orientamento **portrait** (il telefono sta dritto anche su manubrio)
 - Tema scuro, target touch ≥ 56 dp pensati per l'uso con guanti
@@ -234,6 +246,7 @@ Implementato:
 - [x] Pannello controlli contestuale
 - [x] Icona adattiva e splash screen a tema scuro
 - [x] Effetti guidati dal pattern coerenti con il flash fisso (v1.0.1)
+- [x] Modalità e preset personalizzabili, con ripristino dei valori di fabbrica
 
 Da fare (vedi roadmap in [docs/PLAN.md](docs/PLAN.md)):
 

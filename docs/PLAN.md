@@ -387,10 +387,18 @@ Registrati perché sono lezioni utili per le fasi successive.
 | `_pulseSegments` con 1 impulso ignorava il duty | Test unitario: somma dei segmenti = 0.685 invece di 1.0 | Ramo dedicato per `pulses == 1` |
 | `TextEditingController` distrutto durante la chiusura del dialog | Test widget: crash `used after being disposed` | Controller spostato in un `StatefulWidget` dedicato |
 | Strobo/Alternato congelati su un colore con pattern fisso | Segnalato in uso: in modalità Strada lo schermo restava fermo | `BeaconConfig.effectSupported`/`normalized`: gli effetti guidati dal pattern non sono offerti con `steady` e degradano a `solid` |
+| Tendina notifiche che "balla" durante il lampeggio | Segnalato in uso: con lo strobo attivo la tendina si aggiorna di continuo | Non è un bug dell'app: SystemUI posta e aggiorna la notifica "Torcia" (`FLASHLIGHT_ONGOING`) a **ogni** `setTorchMode`. Misurato: 26 notifiche per 26 accensioni in 14 s. Mitigazione: quando la finestra perde il focus il lampeggio si ferma ma la torcia resta **accesa fissa** (`BeaconEngine.holdTorch`), così il beacon resta visibile e le notifiche si fermano |
 
 **Lezione**: i test unitari non bastano per il timing. La verifica sui log del
 driver LED (`adb logcat | grep setTorchModeStrength`) è l'unico modo per sapere
 se il flash fa davvero quello che il codice crede.
+
+**Seconda lezione**: sempre in quei log, il **primo** impulso dopo lo start dura
+~120 ms invece dei 200 attesi. È la latenza di cold start della HAL della
+fotocamera (~100 ms per il primo `setTorchMode`), non un errore di scala:
+l'origine assoluta assorbe il ritardo e dal secondo ciclo i tempi sono esatti
+(mediana 200/300 ms su 25 cicli, drift 0). Misura sempre almeno 5 cicli e guarda
+la mediana, non il primo fronte.
 
 ---
 

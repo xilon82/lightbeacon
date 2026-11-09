@@ -50,6 +50,36 @@ cambiare la frequenza riscala tutto coerentemente. Il perché in `docs/PLAN.md`
 
 ---
 
+## Persistenza e overlay
+
+I valori di fabbrica restano immutabili nel codice (`BeaconConfig.forMode`,
+`BuiltInPresets.all`); quello che l'utente cambia vive in overlay separati, così
+un ripristino di fabbrica è solo "dimentica gli overlay".
+
+| Chiave (`SharedPreferences`) | Contenuto | Chi la scrive |
+|---|---|---|
+| `mode_overrides_v1` | `{ "strobe": {…config} }` | `ModeOverridesNotifier` |
+| `preset_overrides_v1` | `{ "pedestrian": { "config": {…}, "customName": … } }` | `PresetsNotifier` |
+| `preset_removed_v1` | `["worksite"]`: lapidi dei predefiniti eliminati | `PresetsNotifier` |
+| `active_source_v1` | `{ "type": "mode"\|"preset", "id": … }` | `ActiveSourceNotifier` |
+| `custom_presets_v1` | preset creati dall'utente | `PresetsNotifier` |
+
+Regole di risoluzione:
+
+- modalità: `mode_overrides_v1[mode] ?? BeaconConfig.forMode(mode)`;
+- preset predefinito: `preset_overrides_v1[id] ?? BuiltInPresets.all[id]`, meno
+  quelli che hanno una lapide;
+- `ActiveSource` dice da dove viene la configurazione corrente ed è ciò che
+  abilita "Salva" (sovrascrive) invece di "Salva come nuovo";
+- un overlay corrotto non è un errore: si torna ai valori di fabbrica.
+
+Perché non "materializzare" i predefiniti nello store al primo avvio: un preset
+aggiunto in una versione futura non arriverebbe mai agli utenti esistenti senza
+una migrazione ad hoc. Con l'overlay appare da solo, e le lapidi impediscono di
+far tornare quelli eliminati di proposito.
+
+---
+
 ## Invarianti di dominio
 
 | Invariante | Dove è imposto | Test che lo difende |
@@ -62,6 +92,7 @@ cambiare la frequenza riscala tutto coerentemente. Il perché in `docs/PLAN.md`
 | Effetti pattern-driven degradano con `steady` | `BeaconConfig.normalized`, `effectSupported` | `config_serialization_test`, `effect_painter_test` |
 | Torcia mai accesa se `torchEnabled` è falso | `BeaconEngine.start` | `beacon_engine_test` |
 | Stop non bloccante | `BeaconSessionNotifier._setWakelock`, `ScreenController` | non coperto da test: verificato sul device |
+| La pausa non introduce drift | `BeaconSessionNotifier.resume` richiama `engine.start` (origine nuova) | `beacon_pause_test` |
 
 ---
 
@@ -71,7 +102,8 @@ cambiare la frequenza riscala tutto coerentemente. Il perché in `docs/PLAN.md`
 
 1. Voce in `BeaconMode` (`lib/domain/models/beacon_config.dart`).
 2. Ramo nello `switch` di `BeaconConfig.forMode`: è esaustivo, il compilatore
-   ti avvisa se lo dimentichi.
+   ti avvisa se lo dimentichi. Quei valori sono il **default di fabbrica**:
+   l'utente può sovrascriverli, e `mode_overrides_v1` conserva la differenza.
 3. Card in `lib/features/home/home_page.dart`, etichette `mode<X>Title` /
    `mode<X>Subtitle`.
 4. Chiavi in `app_it.arb` **e** `app_en.arb`, poi `flutter gen-l10n`.
@@ -102,6 +134,8 @@ cambiare la frequenza riscala tutto coerentemente. Il perché in `docs/PLAN.md`
 3. Rami in `BeaconLabels.presetName` e `BeaconLabels.presetDescription`.
 4. `flutter test test/domain/built_in_presets_test.dart`: id unici, niente blu,
    frequenza nel range.
+5. Nessuna migrazione: il preset appare anche a chi ha già l'app, perché la
+   lista viene composta a runtime (vedi "Persistenza e overlay").
 
 ### Nuova chiave di localizzazione
 
@@ -170,6 +204,10 @@ Cosa i test **non** coprono: il timing reale del LED. Un errore di scala (edge
 scalati su un secondo invece che sul ciclo) passa i test unitari e si vede solo
 nei log del driver: vedi `docs/PLAN.md` §13-bis.
 
+Misurando quei log, il **primo** impulso dopo lo start è più corto di ~80–100 ms:
+è la latenza di cold start della HAL della fotocamera, non un errore di scala.
+Valuta sempre almeno 5 cicli e guarda la mediana, non il primo fronte.
+
 ---
 
 ## Mappa dei file
@@ -180,22 +218,26 @@ nei log del driver: vedi `docs/PLAN.md` §13-bis.
 | `lib/app.dart` | `MaterialApp`, locale, tema, onboarding vs home |
 | `lib/core/clock/clock.dart` | `Clock`, `StopwatchClock`, `FakeClock`, `TimerFactory` |
 | `lib/core/theme/app_theme.dart` | tema dark, palette UI, `minTouchTarget` |
-| `lib/domain/engine/beacon_engine.dart` | scheduling degli edge, anti-drift, resync, timeout |
+| `lib/domain/engine/beacon_engine.dart` | scheduling degli edge, anti-drift, resync, timeout, `holdTorch` |
 | `lib/domain/engine/pattern.dart` | pattern → segmenti di ciclo, `isOnAt` |
 | `lib/domain/engine/phase.dart` | fase del ciclo dal tempo trascorso |
 | `lib/domain/engine/jitter_monitor.dart` | statistiche di jitter, soglia di instabilità |
 | `lib/domain/models/beacon_config.dart` | configurazione immutabile, palette, serializzazione, `normalized` |
+| `lib/domain/models/active_source.dart` | da dove viene la configurazione corrente (modalità o preset) |
 | `lib/domain/models/app_settings.dart` | lingua, avviso di sicurezza, cap luminosità, keep-awake |
 | `lib/domain/models/preset.dart` | preset predefiniti (per chiave) e utente (per nome) |
 | `lib/domain/repositories/built_in_presets.dart` | i 6 preset predefiniti |
 | `lib/domain/repositories/settings_repository.dart` | persistenza JSON versionata su `SharedPreferences` |
 | `lib/platform/torch/torch_controller.dart` | seam torcia + `NoopTorchController` |
 | `lib/platform/screen/screen_controller.dart` | seam luminosità applicativa + `NoopScreenController` |
+| `lib/platform/foreground/foreground_controller.dart` | seam window focus (hook in `MainActivity`) + `NoopForegroundController` |
 | `lib/providers/providers.dart` | provider, notifier, sessione beacon (engine + jitter watch) |
 | `lib/features/beacon/beacon_page.dart` | schermo fullscreen, `Ticker`, HUD, stop |
 | `lib/features/beacon/control_sheet.dart` | pannello controlli contestuale, avviso oltre 3 Hz, salvataggio preset |
 | `lib/features/beacon/effect_painter.dart` | rendering degli effetti schermo |
 | `lib/features/beacon/beacon_labels.dart` | etichette localizzate di enum e preset |
+| `lib/features/beacon/config_actions.dart` | riga azioni del pannello: salva modalità/preset, ripristina default |
+| `lib/features/beacon/preset_dialogs.dart` | dialog del nome preset, condiviso da pannello e pagina preset |
 | `lib/features/home/` | scelta della modalità (`home_page.dart`, `mode_card.dart`) |
 | `lib/features/presets/presets_page.dart` | preset predefiniti e personalizzati |
 | `lib/features/settings/settings_page.dart` | lingua, luminosità massima, keep-awake |
@@ -204,6 +246,9 @@ nei log del driver: vedi `docs/PLAN.md` §13-bis.
 | `lib/l10n/app_localizations*.dart` | generati da `flutter gen-l10n`, committati |
 | `test/engine/` | pattern, fase, anti-drift, jitter |
 | `test/domain/` | serializzazione, normalizzazione, preset, guardie di sicurezza |
+| `test/domain/mode_overrides_test.dart` | override delle modalità, reset, overlay corrotto |
+| `test/domain/preset_overlay_test.dart` | lapidi, rinomina, sovrascrittura, reset di fabbrica |
+| `test/widget/beacon_pause_test.dart` | pausa su perdita di focus, interruttore nelle impostazioni |
 | `test/features/` | colore dipinto dal painter |
 | `test/widget/` | onboarding, home, beacon, pannello controlli, salvataggio preset |
 | `tools/generate_icons.py` | rigenera icona legacy, concept e splash (Pillow) |
