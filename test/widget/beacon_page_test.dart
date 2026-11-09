@@ -202,7 +202,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
 
-    final presets = container.read(presetsProvider);
+    final presets = container.read(presetsProvider).custom;
     expect(presets, hasLength(1));
     expect(presets.single.customName, 'Strada di notte');
     expect(presets.single.config, container.read(beaconConfigProvider));
@@ -224,7 +224,7 @@ void main() {
     await tester.pump();
 
     expect(find.text('Inserisci un nome'), findsOneWidget);
-    expect(container.read(presetsProvider), isEmpty);
+    expect(container.read(presetsProvider).custom, isEmpty);
   });
 
   testWidgets('swiping down dismisses the control sheet', (tester) async {

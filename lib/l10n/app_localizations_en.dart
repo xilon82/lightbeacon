@@ -52,6 +52,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get modeComboSubtitle => 'Flash and screen together';
 
   @override
+  String get modeCustomized => 'Customised';
+
+  @override
   String get navPresets => 'Presets';
 
   @override
@@ -77,6 +80,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get beaconTimeoutReached => 'Turned off automatically';
+
+  @override
+  String get beaconSteadyFlash => 'Steady flash';
 
   @override
   String get controlFrequency => 'Frequency';
@@ -207,6 +213,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get savePresetSave => 'Save';
 
   @override
+  String get saveModeAction => 'Save mode';
+
+  @override
+  String get saveModeSaved => 'Mode updated';
+
+  @override
+  String get resetModeAction => 'Restore default';
+
+  @override
+  String get resetModeTitle => 'Restore the mode?';
+
+  @override
+  String get resetModeBody =>
+      'The mode goes back to its factory values. Your presets are not touched.';
+
+  @override
+  String get saveAsNewPresetAction => 'Save as new';
+
+  @override
+  String get configModifiedHint => 'Configuration modified';
+
+  @override
   String get patternSingle => 'Single';
 
   @override
@@ -326,6 +354,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get presetApply => 'Apply';
 
   @override
+  String get presetActionRename => 'Rename';
+
+  @override
+  String get presetActionOverwrite =>
+      'Overwrite with the current configuration';
+
+  @override
+  String get presetActionRestore => 'Restore original';
+
+  @override
+  String get presetRenameTitle => 'Rename preset';
+
+  @override
+  String get presetUpdated => 'Preset updated';
+
+  @override
+  String get presetDeleted => 'Preset deleted';
+
+  @override
+  String get presetRestored => 'Preset restored';
+
+  @override
+  String get presetDeleteTitle => 'Delete the preset?';
+
+  @override
+  String get presetDeleteBody => 'The preset is removed from the list.';
+
+  @override
+  String get presetDeleteBuiltInBody =>
+      'The preset is removed from the list. A factory reset brings it back.';
+
+  @override
+  String get presetModifiedBadge => 'Modified';
+
+  @override
   String get settingsTitle => 'Settings';
 
   @override
@@ -371,7 +434,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsReset => 'Reset settings';
 
   @override
-  String get settingsResetConfirm => 'Reset all settings to their defaults?';
+  String get settingsResetConfirm =>
+      'Reset settings, modes and presets to their factory values?';
+
+  @override
+  String get settingsPauseWhenBackgrounded => 'Steady flash outside the app';
+
+  @override
+  String get settingsPauseWhenBackgroundedDesc =>
+      'When the notification shade or another app covers the screen the flash stays on, steady: this keeps the shade from updating on every flash.';
 
   @override
   String get safetyTitle => 'Before you start';
@@ -428,6 +499,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonReset => 'Reset';
+
+  @override
+  String get commonDelete => 'Delete';
 
   @override
   String get errorTorchUnavailable => 'This device has no usable flash.';

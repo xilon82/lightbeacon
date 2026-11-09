@@ -182,6 +182,12 @@ abstract class AppLocalizations {
   /// **'Flash e schermo insieme'**
   String get modeComboSubtitle;
 
+  /// No description provided for @modeCustomized.
+  ///
+  /// In it, this message translates to:
+  /// **'Personalizzata'**
+  String get modeCustomized;
+
   /// No description provided for @navPresets.
   ///
   /// In it, this message translates to:
@@ -235,6 +241,12 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Spegnimento automatico'**
   String get beaconTimeoutReached;
+
+  /// No description provided for @beaconSteadyFlash.
+  ///
+  /// In it, this message translates to:
+  /// **'Flash fisso'**
+  String get beaconSteadyFlash;
 
   /// No description provided for @controlFrequency.
   ///
@@ -470,6 +482,48 @@ abstract class AppLocalizations {
   /// **'Salva'**
   String get savePresetSave;
 
+  /// No description provided for @saveModeAction.
+  ///
+  /// In it, this message translates to:
+  /// **'Salva modalità'**
+  String get saveModeAction;
+
+  /// No description provided for @saveModeSaved.
+  ///
+  /// In it, this message translates to:
+  /// **'Modalità aggiornata'**
+  String get saveModeSaved;
+
+  /// No description provided for @resetModeAction.
+  ///
+  /// In it, this message translates to:
+  /// **'Ripristina default'**
+  String get resetModeAction;
+
+  /// No description provided for @resetModeTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Ripristinare la modalità?'**
+  String get resetModeTitle;
+
+  /// No description provided for @resetModeBody.
+  ///
+  /// In it, this message translates to:
+  /// **'La modalità torna ai valori di fabbrica. I tuoi preset non vengono toccati.'**
+  String get resetModeBody;
+
+  /// No description provided for @saveAsNewPresetAction.
+  ///
+  /// In it, this message translates to:
+  /// **'Salva come nuovo'**
+  String get saveAsNewPresetAction;
+
+  /// No description provided for @configModifiedHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Configurazione modificata'**
+  String get configModifiedHint;
+
   /// No description provided for @patternSingle.
   ///
   /// In it, this message translates to:
@@ -704,6 +758,72 @@ abstract class AppLocalizations {
   /// **'Applica'**
   String get presetApply;
 
+  /// No description provided for @presetActionRename.
+  ///
+  /// In it, this message translates to:
+  /// **'Rinomina'**
+  String get presetActionRename;
+
+  /// No description provided for @presetActionOverwrite.
+  ///
+  /// In it, this message translates to:
+  /// **'Sovrascrivi con la configurazione attuale'**
+  String get presetActionOverwrite;
+
+  /// No description provided for @presetActionRestore.
+  ///
+  /// In it, this message translates to:
+  /// **'Ripristina originale'**
+  String get presetActionRestore;
+
+  /// No description provided for @presetRenameTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Rinomina preset'**
+  String get presetRenameTitle;
+
+  /// No description provided for @presetUpdated.
+  ///
+  /// In it, this message translates to:
+  /// **'Preset aggiornato'**
+  String get presetUpdated;
+
+  /// No description provided for @presetDeleted.
+  ///
+  /// In it, this message translates to:
+  /// **'Preset eliminato'**
+  String get presetDeleted;
+
+  /// No description provided for @presetRestored.
+  ///
+  /// In it, this message translates to:
+  /// **'Preset ripristinato'**
+  String get presetRestored;
+
+  /// No description provided for @presetDeleteTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Eliminare il preset?'**
+  String get presetDeleteTitle;
+
+  /// No description provided for @presetDeleteBody.
+  ///
+  /// In it, this message translates to:
+  /// **'Il preset viene rimosso dall\'elenco.'**
+  String get presetDeleteBody;
+
+  /// No description provided for @presetDeleteBuiltInBody.
+  ///
+  /// In it, this message translates to:
+  /// **'Il preset viene rimosso dall\'elenco. Il ripristino di fabbrica lo fa tornare.'**
+  String get presetDeleteBuiltInBody;
+
+  /// No description provided for @presetModifiedBadge.
+  ///
+  /// In it, this message translates to:
+  /// **'Modificato'**
+  String get presetModifiedBadge;
+
   /// No description provided for @settingsTitle.
   ///
   /// In it, this message translates to:
@@ -791,8 +911,20 @@ abstract class AppLocalizations {
   /// No description provided for @settingsResetConfirm.
   ///
   /// In it, this message translates to:
-  /// **'Ripristinare tutte le impostazioni ai valori predefiniti?'**
+  /// **'Ripristinare impostazioni, modalità e preset ai valori di fabbrica?'**
   String get settingsResetConfirm;
+
+  /// No description provided for @settingsPauseWhenBackgrounded.
+  ///
+  /// In it, this message translates to:
+  /// **'Flash fisso fuori dall\'app'**
+  String get settingsPauseWhenBackgrounded;
+
+  /// No description provided for @settingsPauseWhenBackgroundedDesc.
+  ///
+  /// In it, this message translates to:
+  /// **'Quando la tendina o un\'altra app coprono lo schermo il flash resta acceso fisso: evita che la tendina si aggiorni a ogni lampo.'**
+  String get settingsPauseWhenBackgroundedDesc;
 
   /// No description provided for @safetyTitle.
   ///
@@ -895,6 +1027,12 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Ripristina'**
   String get commonReset;
+
+  /// No description provided for @commonDelete.
+  ///
+  /// In it, this message translates to:
+  /// **'Elimina'**
+  String get commonDelete;
 
   /// No description provided for @errorTorchUnavailable.
   ///

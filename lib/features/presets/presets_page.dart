@@ -7,12 +7,23 @@ import '../../l10n/l10n.dart';
 import '../../providers/providers.dart';
 import '../beacon/beacon_labels.dart';
 import '../beacon/beacon_page.dart';
+import '../beacon/preset_dialogs.dart';
 
 class PresetsPage extends ConsumerWidget {
   const PresetsPage({super.key});
 
   static Route<void> route() =>
       MaterialPageRoute<void>(builder: (_) => const PresetsPage());
+
+  void _snack(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
 
   Future<void> _apply(
     BuildContext context,
@@ -26,11 +37,88 @@ class PresetsPage extends ConsumerWidget {
     await Navigator.of(context).push(BeaconPage.route());
   }
 
+  Future<void> _rename(
+    BuildContext context,
+    WidgetRef ref,
+    Preset preset,
+  ) async {
+    final name = await showPresetNameDialog(
+      context,
+      title: context.l10n.presetRenameTitle,
+      initialName: BeaconLabels.presetName(
+        context,
+        preset.nameKey,
+        preset.customName,
+      ),
+    );
+    if (name == null) return;
+
+    await ref.read(presetsProvider.notifier).rename(preset.id, name);
+    if (!context.mounted) return;
+    _snack(context, context.l10n.presetUpdated);
+  }
+
+  Future<void> _overwrite(
+    BuildContext context,
+    WidgetRef ref,
+    Preset preset,
+  ) async {
+    await ref
+        .read(presetsProvider.notifier)
+        .overwrite(preset.id, ref.read(beaconConfigProvider));
+    if (!context.mounted) return;
+    _snack(context, context.l10n.presetUpdated);
+  }
+
+  Future<void> _delete(
+    BuildContext context,
+    WidgetRef ref,
+    Preset preset,
+  ) async {
+    final l10n = context.l10n;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.surfaceHigh,
+        title: Text(l10n.presetDeleteTitle),
+        content: Text(
+          preset.isBuiltIn
+              ? l10n.presetDeleteBuiltInBody
+              : l10n.presetDeleteBody,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.commonCancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l10n.commonDelete),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+
+    await ref.read(presetsProvider.notifier).remove(preset.id);
+    if (!context.mounted) return;
+    _snack(context, l10n.presetDeleted);
+  }
+
+  Future<void> _restore(
+    BuildContext context,
+    WidgetRef ref,
+    Preset preset,
+  ) async {
+    await ref.read(presetsProvider.notifier).restoreBuiltIn(preset.id);
+    if (!context.mounted) return;
+    _snack(context, context.l10n.presetRestored);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
-    final builtIn = ref.watch(builtInPresetsProvider);
-    final custom = ref.watch(presetsProvider);
+    final library = ref.watch(presetsProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.presetsTitle)),
@@ -38,20 +126,29 @@ class PresetsPage extends ConsumerWidget {
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
         children: [
           _SectionHeader(l10n.presetsBuiltIn),
-          for (final preset in builtIn)
+          for (final preset in library.builtIn)
             _PresetTile(
               preset: preset,
+              modified: library.isOverridden(preset.id),
               onTap: () => _apply(context, ref, preset),
+              onRename: () => _rename(context, ref, preset),
+              onOverwrite: () => _overwrite(context, ref, preset),
+              onDelete: () => _delete(context, ref, preset),
+              onRestore: library.isOverridden(preset.id)
+                  ? () => _restore(context, ref, preset)
+                  : null,
             ),
-          if (custom.isNotEmpty) ...[
+          if (library.custom.isNotEmpty) ...[
             const SizedBox(height: 16),
             _SectionHeader(l10n.presetsCustom),
-            for (final preset in custom)
+            for (final preset in library.custom)
               _PresetTile(
                 preset: preset,
+                modified: false,
                 onTap: () => _apply(context, ref, preset),
-                onDelete: () =>
-                    ref.read(presetsProvider.notifier).remove(preset.id),
+                onRename: () => _rename(context, ref, preset),
+                onOverwrite: () => _overwrite(context, ref, preset),
+                onDelete: () => _delete(context, ref, preset),
               ),
           ],
         ],
@@ -83,14 +180,27 @@ class _SectionHeader extends StatelessWidget {
 }
 
 class _PresetTile extends StatelessWidget {
-  const _PresetTile({required this.preset, required this.onTap, this.onDelete});
+  const _PresetTile({
+    required this.preset,
+    required this.modified,
+    required this.onTap,
+    required this.onRename,
+    required this.onOverwrite,
+    required this.onDelete,
+    this.onRestore,
+  });
 
   final Preset preset;
+  final bool modified;
   final VoidCallback onTap;
-  final VoidCallback? onDelete;
+  final VoidCallback onRename;
+  final VoidCallback onOverwrite;
+  final VoidCallback onDelete;
+  final VoidCallback? onRestore;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final name = BeaconLabels.presetName(
       context,
       preset.nameKey,
@@ -121,9 +231,19 @@ class _PresetTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        name,
-                        style: Theme.of(context).textTheme.titleMedium,
+                      Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              name,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
+                          if (modified) ...[
+                            const SizedBox(width: 8),
+                            const _ModifiedBadge(),
+                          ],
+                        ],
                       ),
                       if (description.isNotEmpty) ...[
                         const SizedBox(height: 2),
@@ -135,17 +255,71 @@ class _PresetTile extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (onDelete != null)
-                  IconButton(
-                    onPressed: onDelete,
-                    icon: const Icon(Icons.delete_outline),
+                PopupMenuButton<String>(
+                  icon: const Icon(
+                    Icons.more_vert,
                     color: AppTheme.textSecondary,
-                  )
-                else
-                  const Icon(Icons.play_arrow_rounded, color: AppTheme.accent),
+                  ),
+                  color: AppTheme.surfaceHigh,
+                  onSelected: (value) {
+                    switch (value) {
+                      case 'rename':
+                        onRename();
+                      case 'overwrite':
+                        onOverwrite();
+                      case 'restore':
+                        onRestore?.call();
+                      case 'delete':
+                        onDelete();
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 'rename',
+                      child: Text(l10n.presetActionRename),
+                    ),
+                    PopupMenuItem(
+                      value: 'overwrite',
+                      child: Text(l10n.presetActionOverwrite),
+                    ),
+                    if (onRestore != null)
+                      PopupMenuItem(
+                        value: 'restore',
+                        child: Text(l10n.presetActionRestore),
+                      ),
+                    PopupMenuItem(
+                      value: 'delete',
+                      child: Text(l10n.commonDelete),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ModifiedBadge extends StatelessWidget {
+  const _ModifiedBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      decoration: BoxDecoration(
+        color: AppTheme.accent.withValues(alpha: 0.18),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: AppTheme.accent.withValues(alpha: 0.6)),
+      ),
+      child: Text(
+        context.l10n.presetModifiedBadge,
+        style: const TextStyle(
+          color: AppTheme.accent,
+          fontSize: 10,
+          fontWeight: FontWeight.w700,
         ),
       ),
     );

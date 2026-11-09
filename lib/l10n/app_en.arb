@@ -17,6 +17,7 @@
   "modeSosSubtitle": "Emergency signal",
   "modeComboTitle": "Road",
   "modeComboSubtitle": "Flash and screen together",
+  "modeCustomized": "Customised",
 
   "navPresets": "Presets",
   "navSettings": "Settings",
@@ -28,6 +29,7 @@
   "beaconTorchError": "Unable to control the flash",
   "beaconJitterWarning": "Unstable flashing: frequency reduced",
   "beaconTimeoutReached": "Turned off automatically",
+  "beaconSteadyFlash": "Steady flash",
 
   "controlFrequency": "Frequency",
   "controlFrequencyValue": "{value} Hz",
@@ -92,6 +94,14 @@
   "savePresetEmptyName": "Enter a name",
   "savePresetSave": "Save",
 
+  "saveModeAction": "Save mode",
+  "saveModeSaved": "Mode updated",
+  "resetModeAction": "Restore default",
+  "resetModeTitle": "Restore the mode?",
+  "resetModeBody": "The mode goes back to its factory values. Your presets are not touched.",
+  "saveAsNewPresetAction": "Save as new",
+  "configModifiedHint": "Configuration modified",
+
   "patternSingle": "Single",
   "patternDouble": "Double",
   "patternTriple": "Triple",
@@ -141,6 +151,17 @@
   "presetWorksiteDesc": "Amber strobe, short pulse",
   "presetCustom": "Custom",
   "presetApply": "Apply",
+  "presetActionRename": "Rename",
+  "presetActionOverwrite": "Overwrite with the current configuration",
+  "presetActionRestore": "Restore original",
+  "presetRenameTitle": "Rename preset",
+  "presetUpdated": "Preset updated",
+  "presetDeleted": "Preset deleted",
+  "presetRestored": "Preset restored",
+  "presetDeleteTitle": "Delete the preset?",
+  "presetDeleteBody": "The preset is removed from the list.",
+  "presetDeleteBuiltInBody": "The preset is removed from the list. A factory reset brings it back.",
+  "presetModifiedBadge": "Modified",
 
   "settingsTitle": "Settings",
   "settingsLanguage": "Language",
@@ -161,7 +182,9 @@
     }
   },
   "settingsReset": "Reset settings",
-  "settingsResetConfirm": "Reset all settings to their defaults?",
+  "settingsResetConfirm": "Reset settings, modes and presets to their factory values?",
+  "settingsPauseWhenBackgrounded": "Steady flash outside the app",
+  "settingsPauseWhenBackgroundedDesc": "When the notification shade or another app covers the screen the flash stays on, steady: this keeps the shade from updating on every flash.",
 
   "safetyTitle": "Before you start",
   "safetyPhotosensitivityTitle": "Photosensitivity",
@@ -182,6 +205,7 @@
   "commonOk": "OK",
   "commonClose": "Close",
   "commonReset": "Reset",
+  "commonDelete": "Delete",
 
   "errorTorchUnavailable": "This device has no usable flash.",
   "errorTorchBusy": "The flash is in use by another app.",

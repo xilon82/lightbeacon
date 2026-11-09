@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -35,10 +37,11 @@ class BeaconPage extends ConsumerStatefulWidget {
 }
 
 class _BeaconPageState extends ConsumerState<BeaconPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late final Ticker _ticker;
   late final BeaconEngine _engine;
   late final Clock _clock;
+  StreamSubscription<bool>? _focusSub;
   double _phase = 0;
   bool _hudVisible = true;
   bool _stopping = false;
@@ -52,13 +55,41 @@ class _BeaconPageState extends ConsumerState<BeaconPage>
     _clock = ref.read(clockProvider);
     _ticker = createTicker(_onTick)..start();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
+    WidgetsBinding.instance.addObserver(this);
+    _focusSub = ref
+        .read(foregroundControllerProvider)
+        .focusChanges
+        .listen(_onFocusChanged);
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    unawaited(_focusSub?.cancel());
     _ticker.dispose();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.dispose();
+  }
+
+  /// The notification shade does not pause the activity, so window focus is
+  /// what tells us the beacon is covered by another window.
+  void _onFocusChanged(bool focused) => _setVisible(focused);
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) =>
+      _setVisible(state == AppLifecycleState.resumed);
+
+  void _setVisible(bool visible) {
+    if (!mounted) return;
+    if (!ref.read(settingsProvider).pauseWhenBackgrounded) return;
+
+    final session = ref.read(beaconSessionProvider.notifier);
+    if (visible) {
+      session.resume();
+    } else {
+      session.pause();
+    }
   }
 
   void _onTick(Duration _) {
@@ -107,7 +138,13 @@ class _BeaconPageState extends ConsumerState<BeaconPage>
           child: Stack(
             fit: StackFit.expand,
             children: [
-              if (config.screenEnabled)
+              if (!config.screenEnabled)
+                const ColoredBox(color: Colors.black)
+              else if (session.paused)
+                // Covered by another window: a steady colour keeps the beacon
+                // visible without animating behind the shade.
+                ColoredBox(color: config.primaryColor)
+              else
                 RepaintBoundary(
                   child: CustomPaint(
                     painter: EffectPainter(
@@ -117,9 +154,7 @@ class _BeaconPageState extends ConsumerState<BeaconPage>
                       reduceMotion: reduceMotion,
                     ),
                   ),
-                )
-              else
-                const ColoredBox(color: Colors.black),
+                ),
               if (_hudVisible) _buildHud(context, config, session, l10n),
             ],
           ),
@@ -181,6 +216,8 @@ class _BeaconPageState extends ConsumerState<BeaconPage>
                 icon: Icons.error_outline,
                 text: l10n.beaconTorchError,
               ),
+            if (session.paused)
+              _HudBanner(icon: Icons.flash_on, text: l10n.beaconSteadyFlash),
             const Spacer(),
             // Dark pill with a light border: the screen behind can be any
             // color, including pure white, so the stop button must never rely

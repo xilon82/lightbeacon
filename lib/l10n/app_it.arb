@@ -17,6 +17,7 @@
   "modeSosSubtitle": "Segnale di emergenza",
   "modeComboTitle": "Strada",
   "modeComboSubtitle": "Flash e schermo insieme",
+  "modeCustomized": "Personalizzata",
 
   "navPresets": "Preset",
   "navSettings": "Impostazioni",
@@ -28,6 +29,7 @@
   "beaconTorchError": "Impossibile controllare il flash",
   "beaconJitterWarning": "Lampeggio instabile: frequenza ridotta",
   "beaconTimeoutReached": "Spegnimento automatico",
+  "beaconSteadyFlash": "Flash fisso",
 
   "controlFrequency": "Frequenza",
   "controlFrequencyValue": "{value} Hz",
@@ -92,6 +94,14 @@
   "savePresetEmptyName": "Inserisci un nome",
   "savePresetSave": "Salva",
 
+  "saveModeAction": "Salva modalità",
+  "saveModeSaved": "Modalità aggiornata",
+  "resetModeAction": "Ripristina default",
+  "resetModeTitle": "Ripristinare la modalità?",
+  "resetModeBody": "La modalità torna ai valori di fabbrica. I tuoi preset non vengono toccati.",
+  "saveAsNewPresetAction": "Salva come nuovo",
+  "configModifiedHint": "Configurazione modificata",
+
   "patternSingle": "Singolo",
   "patternDouble": "Doppio",
   "patternTriple": "Triplo",
@@ -141,6 +151,17 @@
   "presetWorksiteDesc": "Ambra strobo, impulso corto",
   "presetCustom": "Personalizzato",
   "presetApply": "Applica",
+  "presetActionRename": "Rinomina",
+  "presetActionOverwrite": "Sovrascrivi con la configurazione attuale",
+  "presetActionRestore": "Ripristina originale",
+  "presetRenameTitle": "Rinomina preset",
+  "presetUpdated": "Preset aggiornato",
+  "presetDeleted": "Preset eliminato",
+  "presetRestored": "Preset ripristinato",
+  "presetDeleteTitle": "Eliminare il preset?",
+  "presetDeleteBody": "Il preset viene rimosso dall'elenco.",
+  "presetDeleteBuiltInBody": "Il preset viene rimosso dall'elenco. Il ripristino di fabbrica lo fa tornare.",
+  "presetModifiedBadge": "Modificato",
 
   "settingsTitle": "Impostazioni",
   "settingsLanguage": "Lingua",
@@ -161,7 +182,9 @@
     }
   },
   "settingsReset": "Ripristina impostazioni",
-  "settingsResetConfirm": "Ripristinare tutte le impostazioni ai valori predefiniti?",
+  "settingsResetConfirm": "Ripristinare impostazioni, modalità e preset ai valori di fabbrica?",
+  "settingsPauseWhenBackgrounded": "Flash fisso fuori dall'app",
+  "settingsPauseWhenBackgroundedDesc": "Quando la tendina o un'altra app coprono lo schermo il flash resta acceso fisso: evita che la tendina si aggiorni a ogni lampo.",
 
   "safetyTitle": "Prima di iniziare",
   "safetyPhotosensitivityTitle": "Fotosensibilità",
@@ -182,6 +205,7 @@
   "commonOk": "OK",
   "commonClose": "Chiudi",
   "commonReset": "Ripristina",
+  "commonDelete": "Elimina",
 
   "errorTorchUnavailable": "Questo dispositivo non ha un flash utilizzabile.",
   "errorTorchBusy": "Il flash è in uso da un'altra app.",

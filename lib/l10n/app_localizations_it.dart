@@ -52,6 +52,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get modeComboSubtitle => 'Flash e schermo insieme';
 
   @override
+  String get modeCustomized => 'Personalizzata';
+
+  @override
   String get navPresets => 'Preset';
 
   @override
@@ -78,6 +81,9 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get beaconTimeoutReached => 'Spegnimento automatico';
+
+  @override
+  String get beaconSteadyFlash => 'Flash fisso';
 
   @override
   String get controlFrequency => 'Frequenza';
@@ -208,6 +214,28 @@ class AppLocalizationsIt extends AppLocalizations {
   String get savePresetSave => 'Salva';
 
   @override
+  String get saveModeAction => 'Salva modalità';
+
+  @override
+  String get saveModeSaved => 'Modalità aggiornata';
+
+  @override
+  String get resetModeAction => 'Ripristina default';
+
+  @override
+  String get resetModeTitle => 'Ripristinare la modalità?';
+
+  @override
+  String get resetModeBody =>
+      'La modalità torna ai valori di fabbrica. I tuoi preset non vengono toccati.';
+
+  @override
+  String get saveAsNewPresetAction => 'Salva come nuovo';
+
+  @override
+  String get configModifiedHint => 'Configurazione modificata';
+
+  @override
   String get patternSingle => 'Singolo';
 
   @override
@@ -327,6 +355,41 @@ class AppLocalizationsIt extends AppLocalizations {
   String get presetApply => 'Applica';
 
   @override
+  String get presetActionRename => 'Rinomina';
+
+  @override
+  String get presetActionOverwrite =>
+      'Sovrascrivi con la configurazione attuale';
+
+  @override
+  String get presetActionRestore => 'Ripristina originale';
+
+  @override
+  String get presetRenameTitle => 'Rinomina preset';
+
+  @override
+  String get presetUpdated => 'Preset aggiornato';
+
+  @override
+  String get presetDeleted => 'Preset eliminato';
+
+  @override
+  String get presetRestored => 'Preset ripristinato';
+
+  @override
+  String get presetDeleteTitle => 'Eliminare il preset?';
+
+  @override
+  String get presetDeleteBody => 'Il preset viene rimosso dall\'elenco.';
+
+  @override
+  String get presetDeleteBuiltInBody =>
+      'Il preset viene rimosso dall\'elenco. Il ripristino di fabbrica lo fa tornare.';
+
+  @override
+  String get presetModifiedBadge => 'Modificato';
+
+  @override
   String get settingsTitle => 'Impostazioni';
 
   @override
@@ -373,7 +436,14 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get settingsResetConfirm =>
-      'Ripristinare tutte le impostazioni ai valori predefiniti?';
+      'Ripristinare impostazioni, modalità e preset ai valori di fabbrica?';
+
+  @override
+  String get settingsPauseWhenBackgrounded => 'Flash fisso fuori dall\'app';
+
+  @override
+  String get settingsPauseWhenBackgroundedDesc =>
+      'Quando la tendina o un\'altra app coprono lo schermo il flash resta acceso fisso: evita che la tendina si aggiorni a ogni lampo.';
 
   @override
   String get safetyTitle => 'Prima di iniziare';
@@ -430,6 +500,9 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get commonReset => 'Ripristina';
+
+  @override
+  String get commonDelete => 'Elimina';
 
   @override
   String get errorTorchUnavailable =>

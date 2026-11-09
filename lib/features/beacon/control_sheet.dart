@@ -6,6 +6,7 @@ import '../../domain/models/beacon_config.dart';
 import '../../l10n/l10n.dart';
 import '../../providers/providers.dart';
 import 'beacon_labels.dart';
+import 'config_actions.dart';
 
 /// Bottom sheet with the live controls.
 ///
@@ -38,39 +39,6 @@ class _ControlSheetState extends ConsumerState<ControlSheet> {
     final next = transform(ref.read(beaconConfigProvider)).normalized;
     notifier.apply(next);
     ref.read(beaconSessionProvider.notifier).updateConfig(next);
-  }
-
-  /// Saves the current configuration as a named preset.
-  ///
-  /// The name is pre-filled with a timestamp so the user can save in one tap
-  /// while still being able to tell presets apart later.
-  Future<void> _savePreset() async {
-    final l10n = context.l10n;
-    final config = ref.read(beaconConfigProvider);
-    final now = DateTime.now();
-    final defaultName = l10n.savePresetDefaultName(
-      '${now.day.toString().padLeft(2, '0')}/'
-      '${now.month.toString().padLeft(2, '0')} '
-      '${now.hour.toString().padLeft(2, '0')}:'
-      '${now.minute.toString().padLeft(2, '0')}',
-    );
-
-    final name = await showDialog<String>(
-      context: context,
-      builder: (_) => _SavePresetDialog(initialName: defaultName),
-    );
-
-    if (name == null || !mounted) return;
-
-    await ref.read(presetsProvider.notifier).save(name, config);
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(l10n.savePresetSaved),
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 2),
-      ),
-    );
   }
 
   Future<void> _onFrequencyChanged(double value) async {
@@ -277,90 +245,12 @@ class _ControlSheetState extends ConsumerState<ControlSheet> {
                 ),
 
                 const SizedBox(height: 24),
-                OutlinedButton.icon(
-                  onPressed: _savePreset,
-                  icon: const Icon(Icons.bookmark_add_outlined),
-                  label: Text(l10n.savePresetAction),
-                  style: OutlinedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(AppTheme.minTouchTarget),
-                    foregroundColor: AppTheme.accent,
-                    side: const BorderSide(color: AppTheme.accent),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                  ),
-                ),
+                const ConfigActions(),
               ],
             ),
           ),
         );
       },
-    );
-  }
-}
-
-/// Name prompt for saving the current configuration as a preset.
-///
-/// Owns its [TextEditingController] so the controller outlives the dialog's
-/// closing animation.
-class _SavePresetDialog extends StatefulWidget {
-  const _SavePresetDialog({required this.initialName});
-
-  final String initialName;
-
-  @override
-  State<_SavePresetDialog> createState() => _SavePresetDialogState();
-}
-
-class _SavePresetDialogState extends State<_SavePresetDialog> {
-  late final TextEditingController _controller;
-  String? _error;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController(text: widget.initialName);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  void _submit() {
-    final trimmed = _controller.text.trim();
-    if (trimmed.isEmpty) {
-      setState(() => _error = context.l10n.savePresetEmptyName);
-      return;
-    }
-    Navigator.of(context).pop(trimmed);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    return AlertDialog(
-      backgroundColor: AppTheme.surfaceHigh,
-      title: Text(l10n.savePresetTitle),
-      content: TextField(
-        controller: _controller,
-        autofocus: true,
-        textCapitalization: TextCapitalization.sentences,
-        decoration: InputDecoration(
-          labelText: l10n.savePresetNameLabel,
-          hintText: l10n.savePresetNameHint,
-          errorText: _error,
-        ),
-        onSubmitted: (_) => _submit(),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text(l10n.commonCancel),
-        ),
-        FilledButton(onPressed: _submit, child: Text(l10n.savePresetSave)),
-      ],
     );
   }
 }

@@ -71,49 +71,117 @@ class HomePage extends ConsumerWidget {
   }
 }
 
-class _ModeGrid extends StatelessWidget {
+class _ModeGrid extends ConsumerWidget {
   const _ModeGrid({required this.onStart});
 
   final ValueChanged<BeaconMode> onStart;
 
-  @override
-  Widget build(BuildContext context) {
+  /// Long-press on a personalised mode offers the way back to its defaults.
+  Future<void> _resetMode(
+    BuildContext context,
+    WidgetRef ref,
+    BeaconMode mode,
+  ) async {
     final l10n = context.l10n;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.surfaceHigh,
+        title: Text(l10n.resetModeTitle),
+        content: Text(l10n.resetModeBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.commonCancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l10n.commonReset),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    await ref.read(modeOverridesProvider.notifier).reset(mode);
+  }
+
+  Widget _card(
+    BuildContext context,
+    WidgetRef ref,
+    Map<BeaconMode, BeaconConfig> overrides, {
+    required BeaconMode mode,
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required Color accent,
+  }) {
+    final modified = overrides.containsKey(mode);
+    return ModeCard(
+      title: title,
+      subtitle: subtitle,
+      icon: icon,
+      accent: accent,
+      onTap: () => onStart(mode),
+      modified: modified,
+      onLongPress: modified ? () => _resetMode(context, ref, mode) : null,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    final overrides = ref.watch(modeOverridesProvider);
+
     final cards = <Widget>[
-      ModeCard(
+      _card(
+        context,
+        ref,
+        overrides,
+        mode: BeaconMode.strobe,
         title: l10n.modeStrobeTitle,
         subtitle: l10n.modeStrobeSubtitle,
         icon: Icons.flash_on,
         accent: AppTheme.accent,
-        onTap: () => onStart(BeaconMode.strobe),
       ),
-      ModeCard(
+      _card(
+        context,
+        ref,
+        overrides,
+        mode: BeaconMode.torch,
         title: l10n.modeTorchTitle,
         subtitle: l10n.modeTorchSubtitle,
         icon: Icons.highlight,
         accent: BeaconPalette.white,
-        onTap: () => onStart(BeaconMode.torch),
       ),
-      ModeCard(
+      _card(
+        context,
+        ref,
+        overrides,
+        mode: BeaconMode.screen,
         title: l10n.modeScreenTitle,
         subtitle: l10n.modeScreenSubtitle,
         icon: Icons.palette_outlined,
         accent: BeaconPalette.cyan,
-        onTap: () => onStart(BeaconMode.screen),
       ),
-      ModeCard(
+      _card(
+        context,
+        ref,
+        overrides,
+        mode: BeaconMode.combo,
         title: l10n.modeComboTitle,
         subtitle: l10n.modeComboSubtitle,
         icon: Icons.wb_twilight,
         accent: BeaconPalette.amber,
-        onTap: () => onStart(BeaconMode.combo),
       ),
-      ModeCard(
+      _card(
+        context,
+        ref,
+        overrides,
+        mode: BeaconMode.sos,
         title: l10n.modeSosTitle,
         subtitle: l10n.modeSosSubtitle,
         icon: Icons.sos,
         accent: AppTheme.danger,
-        onTap: () => onStart(BeaconMode.sos),
       ),
     ];
 

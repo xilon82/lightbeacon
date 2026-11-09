@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_theme.dart';
+import '../../l10n/l10n.dart';
 
 /// Large tappable card used on the home screen.
 class ModeCard extends StatelessWidget {
@@ -11,6 +12,8 @@ class ModeCard extends StatelessWidget {
     required this.icon,
     required this.accent,
     required this.onTap,
+    this.onLongPress,
+    this.modified = false,
   });
 
   final String title;
@@ -18,6 +21,10 @@ class ModeCard extends StatelessWidget {
   final IconData icon;
   final Color accent;
   final VoidCallback onTap;
+  final VoidCallback? onLongPress;
+
+  /// True when the user saved over this mode, so it can be restored.
+  final bool modified;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +36,7 @@ class ModeCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         child: InkWell(
           onTap: onTap,
+          onLongPress: onLongPress,
           borderRadius: BorderRadius.circular(20),
           child: Container(
             constraints: const BoxConstraints(minHeight: 96),
@@ -54,9 +62,19 @@ class ModeCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        title,
-                        style: Theme.of(context).textTheme.titleLarge,
+                      Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              title,
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                          ),
+                          if (modified) ...[
+                            const SizedBox(width: 8),
+                            const _ModifiedChip(),
+                          ],
+                        ],
                       ),
                       const SizedBox(height: 2),
                       Text(
@@ -70,6 +88,31 @@ class ModeCard extends StatelessWidget {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Marks a mode the user personalised, so "restore default" is discoverable.
+class _ModifiedChip extends StatelessWidget {
+  const _ModifiedChip();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      decoration: BoxDecoration(
+        color: AppTheme.accent.withValues(alpha: 0.18),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: AppTheme.accent.withValues(alpha: 0.6)),
+      ),
+      child: Text(
+        context.l10n.modeCustomized,
+        style: const TextStyle(
+          color: AppTheme.accent,
+          fontSize: 10,
+          fontWeight: FontWeight.w700,
         ),
       ),
     );
