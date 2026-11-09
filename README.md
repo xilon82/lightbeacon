@@ -1,4 +1,4 @@
-# LightBeacon
+# <img src="android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" width="44" align="top" alt="LightBeacon"> LightBeacon
 
 **Fatti vedere. Anche al buio.**
 
