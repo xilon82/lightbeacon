@@ -123,6 +123,21 @@ class BeaconEngine {
     _applyTorch(false);
   }
 
+  /// Cancels the schedule but keeps the torch on, steady.
+  ///
+  /// Used when the beacon is covered by another window: a blinking torch makes
+  /// the system post a notification on every edge, while a steady one keeps the
+  /// user visible without any further notification.
+  void holdTorch() {
+    _edgeTimer?.cancel();
+    _edgeTimer = null;
+    _timeoutTimer?.cancel();
+    _timeoutTimer = null;
+    _running = false;
+    _startedAt = null;
+    _applyTorch(true);
+  }
+
   void dispose() {
     stop();
     onTorchChanged = null;
